@@ -138,3 +138,35 @@ body {
   -webkit-transition-delay: 0.2s;
   transition-delay: 0.2s;
 }
+
+.fa-shopping-bag{
+  font-size:26px; 
+  color: skyblue;
+}
+
+.shopping-bag-text{
+  color: black;
+}
+
+.navbar-nav {
+  list-style: none;
+}
+.navbar-nav li {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.navbar-nav .nav-item:not(:last-child) {
+  border-right: 2px solid gray;
+  padding: 3px;
+}
+
+@media (max-width: 768px) {
+ .navbar-nav .nav-item:not(:last-child) {
+   border-right: none;
+ }
+}
+
+.navbar .navbar-collapse {
+  text-align: center;
+}

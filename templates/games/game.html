@@ -1,51 +1,46 @@
-<{% extends 'base.html' %}{% block content %}
-  div class="container">
-    <h1 class="platformTitle">Details</h1>
-    <hr />
-  </div>
+{% extends 'base.html' %}{% block content %}
 
-  <div class="container">
-    <div class="row game-details-row">
-      <div class="col-xs-4">
-        <img
-          src="https://cdn.thegamesdb.net/images/thumb/boxart/front/2624-1.jpg"
-          class="pull-left img-responsive shadow-lg"
-          alt="..."
-        />
-        <div class="col-xs-8">
-          <div class="toast-body">
-            <h4 class="mt-0">Modern Warfare 3</h4>
-          </div>
+<div class="container">
+  <div class="row game-details-row">
+    <div class="col-xs-4">
+      <img
+        src="https://cdn.thegamesdb.net/images/thumb/boxart/front/2624-1.jpg"
+        class="pull-left img-responsive shadow-lg"
+        alt="..."
+      />
+      <div class="col-xs-8">
+        <div class="toast-body">
+          <h4 class="mt-0">{{ object.title }}</h4>
+        </div>
 
-          <div class="toast-body">
-            The best-selling first person action series of all-time returns
-            with the epic sequel to multiple “Game of the Year” award winner,
-            Call of Duty®: Modern Warfare® 2. In the world’s darkest hour, are
-            you willing to do what is necessary? Prepare yourself for a
-            cinematic thrill-ride only Call of Duty can deliver. The
-            definitive Multiplayer experience returns bigger and better than
-            ever, loaded with new maps, modes and features. Co-Op play has
-            evolved with all-new Spec-Ops missions and leaderboards, as well
-            as Survival Mode, an action-packed combat progression unlike any
-            other.
-          </div>
-          <div class="toast-body">
-            <span class="badge badge-pill badge-primary">Action</span>
-            <span class="badge badge-pill badge-primary">FPS</span>
-            <span class="badge badge-pill badge-primary">Multiplayer</span>
-            <span class="badge badge-pill badge-primary">Shooter</span>
-          </div>
-          <div class="toast-body">
-            <button
-              type="button"
-              class="btn btn-lg btn-primary"
-              style="margin-top: 40px"
-            >
-              $60 - Add to Cart
-            </button>
-          </div>
+        <div class="toast-body">
+          {{ object.description }}
+        </div>
+        <div class="toast-body">
+          {% for tag in object.genre_tages %}
+          <span class="badge badge-pill badge-primary rounded-0 shadow-lg">
+            {{ tag }}
+          </span>
+          {% endfor %}
+        </div>
+        <div class="toast-body">
+          <a
+            href="{{ object.get_add_to_cart_url }}"
+            class="btn btn-lg btn-primary shadow-lg"
+            style="margin-top: 40px"
+          >
+            $60 - Add to Cart
+          </a>
+          <a
+            href="{{ object.get_remove_from_cart_url }}"
+            class="btn btn-lg btn-primary shadow-lg"
+            style="margin-top: 40px"
+          >
+            Remove From Cart
+          </a>
         </div>
       </div>
     </div>
   </div>
-  {% endblock %}
+</div>
+{% endblock %}

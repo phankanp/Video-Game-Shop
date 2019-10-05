@@ -5,6 +5,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>{% block head_title %}{% endblock %}</title>
+    {% block extra_head %} {% endblock %}
     <!-- Font Awesome -->
     <link rel="stylesheet" href="{% static 'fontawesome/css/all.css' %}" />
     <!-- Boostrap -->
@@ -13,11 +15,11 @@
     <link rel="stylesheet" href="{% static 'css/custom_styles.css' %}" />
     <!-- Lightbox -->
     <link rel="stylesheet" href="{% static 'css/lightbox.min.css' %}" />
-    <title>Video Game Store</title>
   </head>
   <body>
     <!-- Navbar -->
-    {% include 'partials/_navbar.html' %} {% block content %}{% endblock %}
+    {% include 'partials/_navbar.html' %} {% include 'partials/_alerts.html' %}
+    {% block content %}{% endblock %} {% block extra_body %} {% endblock %}
 
     <script src="{% static 'js/jquery-3.4.1.min.js' %}"></script>
     <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>

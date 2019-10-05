@@ -2,7 +2,14 @@ from django.urls import path
 
 from . import views
 
+# app_name = "games"
+
 urlpatterns = [
-    path('', views.index, name='games'),
-    path('<int:game_id>', views.game, name='game')
+    path('<int:pk>/', views.GameDetailView.as_view(), name='single_game'),
+    path('<str:platform_name>', views.HomeView.as_view(), name='games_list'),
+    path('add-to-cart/<int:pk>/', views.add_to_cart, name='add_to_cart'),
+    path('remove-from-cart/<int:pk>/',
+         views.remove_from_cart, name='remove_from_cart'),
+
+
 ]
