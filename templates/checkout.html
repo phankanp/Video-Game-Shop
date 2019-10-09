@@ -1,0 +1,158 @@
+
+{% extends 'base.html' %} {% block content %} {% load crispy_forms_tags %}
+
+<div class="container">
+  <div class="text-center text-light">
+    <i class="fas fa-credit-card"></i>
+    <i class="far fa-credit-card"></i>
+    <h2>Checkout form</h2>
+  </div>
+
+  <div class="row">
+    <div class="col-md-4 order-md-2 mb-4">
+       
+      <h4 class="d-flex justify-content-between align-items-center mb-3 ">
+        <span class="text-light">Your cart</span>
+        <span class="badge badge-primary badge-pill">{{order.get_total_cart_quantity}}</span>
+      </h4>
+
+      <ul class="list-group mb-3">
+          {% for order_item in order.games.all %}
+        <li class="list-group-item d-flex justify-content-between lh-condensed">
+          <div>
+            <h6 class="my-0">{{order_item.game.title}}</h6>
+            <small class="text-muted">Quantity: {{order_item.quantity}}</small>
+          </div>
+          <span class="text-muted">${{order_item.game.price_per_unit}}</span>
+        </li>
+        {% if order.coupon %}
+        <li class="list-group-item d-flex justify-content-between bg-light">
+          <div class="text-success">
+            <h6 class="my-0">Promo code</h6>
+            <small>"{{ order.coupon }}"</small>
+          </div>
+        <span class="text-success">-${{ order.coupon.amount }}</span>
+        </li>
+        {% endif %}
+        <li class="list-group-item d-flex justify-content-between">
+          <span>Total (USD)</span>
+          <strong>${{order.get_total_cart_price}}</strong>
+        </li>
+      </ul>
+      {% endfor %}
+      <form  action="{% url 'checkout-coupon' %}" method="POST" class="card p-3 shadow-lg">
+        <div class="input-group">
+          {{coupon.code}}
+          <div class="input-group-append">
+            <button type="submit" class="btn btn-secondary">Redeem</button>
+            {% csrf_token %}
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="col-md-8 order-md-1">
+      <h4 class="mb-3 text-light">Shipping address</h4>
+      <div class="card p-4">
+
+        <form method="POST" class="needs-validation" novalidate>
+            {% csrf_token %}
+          <div class="mb-3">
+            <label for="address">Address</label>
+            {{ form.address }}
+            <div class="invalid-feedback">
+              Please enter your shipping address.
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label for="address2"
+              >Address 2 <span class="text-muted">(Optional)</span></label
+            >
+            {{ form.optional_address }}
+          </div>
+
+          <div class="row">
+            <div class="col-md-5 mb-3">
+              <label for="country">Country</label>
+  
+              {{ form.country }}
+              <div class="invalid-feedback">
+                Please select a valid country.
+              </div>
+            </div>
+
+            <div class="col-md-3 mb-3">
+              <label for="zip">Zip</label>
+    
+              {{ form.zip }}
+              <div class="invalid-feedback">
+                Zip code required.
+              </div>
+            </div>
+          </div>
+          <hr class="mb-4" />
+          <div class="custom-control custom-checkbox">
+            <input
+              name='same_billing_address'
+              {% if form.same_billing_address.value %}checked='checked'{% endif %}
+              type="checkbox"
+              class="custom-control-input"
+              id="same_billing_address"
+              onclick="checkFluency()"
+            />
+            <label class="custom-control-label" for="same_billing_address"
+              >Billing address is the same as my Shipping address</label
+            >
+          </div>
+          <hr class="mb-4" />
+          
+          <div id="billing-details">
+              <h4 class="mb-3 text-dark">Billing address</h4>
+          <div class="mb-3" >
+            <label for="address">Address</label>
+
+            {{ form.billing_address }}
+            <div class="invalid-feedback">
+              Please enter your shipping address.
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label for="address2"
+              >Address 2 <span class="text-muted">(Optional)</span></label
+            >
+ 
+            {{ form.billing_optional_address }}
+          </div>
+
+          <div class="row">
+            <div class="col-md-5 mb-3">
+              <label for="country">Country</label>
+        
+              {{ form.billing_country }}
+              <div class="invalid-feedback">
+                Please select a valid country.
+              </div>
+            </div>
+
+            <div class="col-md-3 mb-3">
+              <label for="zip">Zip</label>
+        
+              {{ form.billing_zip }}
+              <div class="invalid-feedback">
+                Zip code required.
+              </div>
+            </div>
+          </div>
+          <hr class="mb-4" />
+        </div>
+          <button class="btn btn-primary btn-lg btn-block" type="submit">
+            Continue to checkout
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

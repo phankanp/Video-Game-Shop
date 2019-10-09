@@ -3,6 +3,7 @@ from django.db import models
 from django.conf import settings
 from django.shortcuts import reverse
 from django.utils import timezone
+from django_countries.fields import CountryField
 
 # Create your models here.
 
@@ -61,6 +62,9 @@ class OrderItem(models.Model):
     def __str__(self):
         return f'{self.quantity} of {self.game.title}'
 
+    def get_total_cart_item_price(self):
+        return self.game.price_per_unit * self.quantity
+
 
 class Order(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL,
@@ -74,5 +78,58 @@ class Order(models.Model):
 
     ordered = models.BooleanField(default=False)
 
+    shipping_address = models.ForeignKey(
+        'Address', related_name='shipping_address', on_delete=models.SET_NULL, blank=True, null=True)
+
+    billing_address = models.ForeignKey(
+        'Address', related_name='billing_address', on_delete=models.SET_NULL, blank=True, null=True)
+
+    coupon = models.ForeignKey('Coupon', on_delete=models.SET_NULL, blank=True, null=True)
+
     def __str__(self):
         return self.user.username
+
+    def get_total_cart_price(self):
+        x = 0
+        
+        for order_item in self.games.all():
+            x += order_item.game.price_per_unit * order_item.quantity
+        
+        if self.coupon:
+            x -= self.coupon.amount    
+        
+        return x
+
+    def get_total_cart_quantity(self):
+        x = 0
+        
+        for order_item in self.games.all():
+            x += order_item.quantity
+       
+        return x
+
+
+class Address(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL,
+                             on_delete=models.CASCADE)
+
+    address = models.CharField(max_length=1000,  default="")
+
+    optional_address = models.CharField(max_length=1000,  default="")
+
+    country = CountryField(multiple=False)
+
+    zip = models.CharField(max_length=10,  default="")
+
+    address_type = models.CharField(max_length=8)
+
+    def __str__(self):
+        return self.user.username
+
+
+class Coupon(models.Model):
+    code = models.CharField(max_length=15)
+    amount = models.DecimalField( max_digits=5, decimal_places=2, default=0.00)
+
+    def __str__(self):
+        return self.code.upper()

@@ -1,0 +1,54 @@
+{% extends 'base.html' %} {% block content %}
+<div class="container">
+  <div class="row justify-content-center">
+    <div class=" col table-responsive mx-auto ">
+        <table class="table table-dark shadow-lg ">
+          <thead class="thead-dark">
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Title</th>
+                <th scope="col">Price</th>
+                <th scope="col">Quantity</th>
+                <th scope="col">Total Price</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for order_item in order.games.all %}
+              <tr>
+                <th scope="row">{{forloop.counter}}</th>
+                <td>{{order_item.game.title}}</td>
+                <td>{{order_item.game.price_per_unit}}
+
+                </td>
+                <td>
+                  <a href="{% url 'remove_from_cart' order_item.game.id %}">
+                    <i class="fas fa-minus"></i>
+                  </a>
+                  {{order_item.quantity}}
+                  <a href="{% url 'add_to_cart' order_item.game.id %}">
+                    <i class="fas fa-plus"></i>
+                  </a>
+                </td>
+                <td>${{order_item.get_total_cart_item_price}}</td>
+              </tr>
+              {% endfor %}
+              <tr>
+                <th scope="row"><b>Order Total</b></th>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><b>${{order.get_total_cart_price}}</b></td>
+              </tr>
+            </tbody>
+        </table>
+      </div>
+  </div>
+  <div class="row float-right">
+    <div class="col">
+      <button type="button" class="btn btn-checkout btn-primary btn-lg shadow-lg">
+        <i class="fas fa-shopping-cart"></i>
+        - Proceed to Checkout</button>
+    </div>
+  </div>
+</div>
+{% endblock %}

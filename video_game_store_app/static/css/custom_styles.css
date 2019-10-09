@@ -170,3 +170,31 @@ body {
 .navbar .navbar-collapse {
   text-align: center;
 }
+
+.table-responsive {
+  /* position: absolute; */
+  margin-top: 120px;
+  /* margin-left: 120px; */
+  width: 50% !important; 
+
+}
+
+table th {
+  text-align: center; 
+}
+
+table td {
+  text-align: center; 
+}
+
+.btn-checkout{
+  margin-top: 25px;
+}
+
+.fa-minus{
+  margin-right: 2px;
+}
+
+.fa-plus{
+  margin-left: 2px;
+}
