@@ -35,6 +35,8 @@ class Game(models.Model):
     genre_tages = ArrayField(models.CharField(
         max_length=200),  default=list, blank=True)
 
+    box_art = models.CharField(max_length=100)
+
     def get_add_to_cart_url(self):
         return reverse("add_to_cart", kwargs={
             'pk': self.pk
@@ -83,6 +85,9 @@ class Order(models.Model):
 
     billing_address = models.ForeignKey(
         'Address', related_name='billing_address', on_delete=models.SET_NULL, blank=True, null=True)
+
+    payment = models.ForeignKey(
+        'Payment', on_delete=models.SET_NULL, blank=True, null=True)
 
     coupon = models.ForeignKey('Coupon', on_delete=models.SET_NULL, blank=True, null=True)
 
@@ -133,3 +138,12 @@ class Coupon(models.Model):
 
     def __str__(self):
         return self.code.upper()
+
+class Payment(models.Model):
+    stripe_charge_id = models.CharField(max_length=50)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, blank=True, null=True)
+    amount = models.DecimalField( max_digits=5, decimal_places=2, default=0.00)
+    timestamp = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.user.username

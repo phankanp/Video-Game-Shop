@@ -1,33 +1,34 @@
 {% extends 'base.html' %}{% block content %}
 
 <div class="container">
-  <h1 class="platformTitle">Platform Title</h1>
+  <h1 class="platformTitle">{{platform}}</h1>
   <hr />
 </div>
 
 <div class="container">
   <div class="center">
     <div class="row justify-content-center">
-      {% for game in object_list %}
+      {% for game in games %}
       <div class="col-12 col-md-6 col-lg-4">
         <div
-          class="card d-block mx-auto mx-md-0 shadow-lg"
+          class="card d-block mx-auto mx-md-0 shadow-lg hvr-grow"
           style="width: 18rem;"
         >
+        <a href="{% url 'single_game' game.id %}" class="card-link">
           <img
-            src="https://cdn.thegamesdb.net/images/thumb/boxart/front/2624-1.jpg"
+            src="{{game.box_art}}"
             class="card-img-top"
             alt="..."
           />
+        </a>
           <div class="card-body">
             <h5 class="card-title">{{ game.title }}</h5>
             <h6 class="card-title">${{ game.price_per_unit }}</h6>
-          </div>
-          <div class="card-body">
             <a href="{% url 'single_game' game.id %}" class="card-link"
               >More Details...</a
             >
           </div>
+         
         </div>
       </div>
       {% endfor %}
