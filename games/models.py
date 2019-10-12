@@ -18,6 +18,7 @@ PLATFORM_CHOICES = (
 
 
 class Game(models.Model):
+
     title = models.CharField(max_length=100)
 
     description = models.CharField(max_length=1000,  default="")
@@ -47,6 +48,9 @@ class Game(models.Model):
             'pk': self.pk
         })
 
+    def get_platform_name(self, platform):
+        return PLATFORM_CHOICES[platform]
+
     def __str__(self):
         return self.title
 
@@ -69,6 +73,14 @@ class OrderItem(models.Model):
 
 
 class Order(models.Model):
+
+    ORDER_CHOICES = (
+    ('p', 'Payment Recieved'),
+    ('pe', 'Pending'),
+    ('pa', 'Packing'),
+    ('s', 'Shippped'),
+    )
+
     user = models.ForeignKey(settings.AUTH_USER_MODEL,
                              on_delete=models.CASCADE)
 
@@ -79,6 +91,12 @@ class Order(models.Model):
     ordered_date = models.DateTimeField(timezone.now())
 
     ordered = models.BooleanField(default=False)
+
+    order_status = models.CharField(
+        max_length=2,
+        choices=ORDER_CHOICES,
+        default='pe',
+    )
 
     shipping_address = models.ForeignKey(
         'Address', related_name='shipping_address', on_delete=models.SET_NULL, blank=True, null=True)

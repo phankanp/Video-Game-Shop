@@ -3,6 +3,7 @@ from django.views.generic import ListView, DetailView, View
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_POST
 from django.core.exceptions import ObjectDoesNotExist
+from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import Game, OrderItem, Order, Coupon, Payment
 from django.shortcuts import redirect
 from django.utils import timezone
@@ -56,7 +57,7 @@ class GameDetailView(DetailView):
     template_name = "games/game.html"
 
 
-class CartSummaryView(View):
+class CartSummaryView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         try:
             order = Order.objects.get(user=self.request.user, ordered=False)
@@ -69,7 +70,7 @@ class CartSummaryView(View):
 
             return redirect("/")
 
-class OrdersView(View):
+class OrdersView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         try:
             order = Order.objects.all().filter(user=self.request.user).filter(ordered=True)
@@ -286,7 +287,7 @@ def add_to_cart(request, pk):
             user=request.user, ordered_date=ordered_date)
         order.games.add(order_item)
         messages.info(request, f'{game.title} was added to your cart')
-    return redirect("single_game", pk=pk)
+    return redirect("games_list", platform_name=game.platform)
 
 
 @login_required

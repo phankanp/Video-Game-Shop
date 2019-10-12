@@ -8,12 +8,17 @@
             src="{{game.box_art}}"
             class=" float-left img-responsive shadow-lg mr-5 mb-3"
             alt="..."
+            style="height:375px; width:300px"
           />
         </div>
         <div class="col">
           <div class="toast-body">
             <h4 class="mt-0">{{ object.title }}</h4>
           </div>
+          <div class="toast-body">
+              <span class="mt-0 badge badge-pill badge-success rounded-0 shadow-lg">Developer: {{ object.developer }}</span>
+              <span class="mt-0 badge badge-pill badge-success rounded-0 shadow-lg">Release Date: {{ object.release_date }}</span>
+            </div>
           <div class="toast-body">
             {{ object.description }}
           </div>

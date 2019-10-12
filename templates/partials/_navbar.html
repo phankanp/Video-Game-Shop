@@ -46,7 +46,7 @@
         </li>
       {% else %}
       <li class="nav-item">
-        <a class="nav-link active" href="#">
+        <a class="nav-link active" href="{% url 'orders' %}">
           <i class="fas fa-grip-lines-vertical"></i>
           My Orders
         </a>
@@ -67,7 +67,7 @@
         <a class="nav-link" href="{% url 'shopping-cart' %}">
             <span class="fa-stack fa-1x">
           <i class="fa fa-shopping-bag fa-stack-2x"></i>
-          <span class="fa-stack-1x shopping-bag-text">{{request.user|cart_item_count}}</span>
+          <span class="fa-stack-1x shopping-bag-text">0</span>
         </span>
         </a>
       </li>

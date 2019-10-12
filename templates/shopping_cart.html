@@ -1,6 +1,7 @@
 {% extends 'base.html' %} {% block content %}
 <div class="container">
   <div class="row justify-content-center">
+      {% if order %}
     <div class=" col table-responsive mx-auto ">
         <table class="table table-dark shadow-lg ">
           <thead class="thead-dark">
@@ -16,8 +17,8 @@
               {% for order_item in order.games.all %}
               <tr>
                 <th scope="row">{{forloop.counter}}</th>
-                <td>{{order_item.game.title}}</td>
-                <td>{{order_item.game.price_per_unit}}
+                <td>{{order_item.game.title}} - {{order_item.game.get_platform_display}}</td>
+                <td>${{order_item.game.price_per_unit}}
 
                 </td>
                 <td>
@@ -50,5 +51,8 @@
         - Proceed to Checkout</a>
     </div>
   </div>
+  {% else %}
+  <h2 class="mt-5 text-white text-center">Shopping Cart is empty!</h2>
+  {% endif %}
 </div>
 {% endblock %}
