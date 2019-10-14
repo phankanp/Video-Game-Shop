@@ -130,6 +130,11 @@ class Order(models.Model):
             x += order_item.quantity
        
         return x
+    
+    def get_generate_invoice_url(self):
+        return reverse("invoice", kwargs={
+            'pk': self.pk
+        })
 
 
 class Address(models.Model):
@@ -156,6 +161,7 @@ class Coupon(models.Model):
 
     def __str__(self):
         return self.code.upper()
+
 
 class Payment(models.Model):
     stripe_charge_id = models.CharField(max_length=50)

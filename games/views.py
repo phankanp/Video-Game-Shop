@@ -10,6 +10,7 @@ from django.utils import timezone
 from django.contrib import messages
 from django.conf import settings
 
+from .render import Render
 import stripe
 import json
 from django.http import HttpResponse
@@ -329,3 +330,14 @@ def remove_from_cart(request, pk):
     else:
         messages.info(request, 'No active orders')
         return redirect("single_game", pk=pk)
+
+
+
+def admin_order_pdf(request, pk):
+    order = get_object_or_404(Order, pk=pk)
+    
+    context = {
+        'order': order
+    }
+    
+    return Render.render('invoice.html', context)

@@ -5,6 +5,7 @@ from . import views
 # app_name = "games"
 
 urlpatterns = [
+    path('invoice/<int:pk>/', views.admin_order_pdf, name='invoice'),
     path('orders', views.OrdersView.as_view(), name='orders'),
     path('<int:pk>/', views.GameDetailView.as_view(), name='single_game'),
     path('checkout/payment', views.payment_view, name='payment'),

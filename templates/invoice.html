@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <style type="text/css">
+      body {
+        font-size: 14px;
+      }
+      .title {
+        font-size: 22px;
+
+        color: #007cae;
+      }
+      .status {
+        color: red;
+      }
+
+      .hrItem {
+        border: none;
+        height: 1px;
+        background-color: #fff; /* Modern Browsers */
+      }
+      thead {
+        color: #007cae;
+      }
+      table {
+        width: 100%;
+      }
+      .table_items {
+        text-align: center;
+      }
+      p {
+        margin-top: 0;
+        margin-bottom: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="">INVOICE TO:</div>
+    <h2 class="">
+      <u>{{ order.user }}</u>
+    </h2>
+
+    <div class="billingAddress">
+      <p class=""><b>Billing Address:</b></p>
+      <p>{{ order.billing_address.address }}</p>
+      <p>{{ order.billing_address.optional_address }}</p>
+      <p>
+        {{ order.billing_address.country }}, {{ order.billing_address.zip }}
+      </p>
+    </div>
+
+    <hr />
+    <div>
+      <h1 class="title">Your Order:</h1>
+    </div>
+    <div class="shippingAddress">
+      <p class=""><b>Shipping Address:</b></p>
+      <p>{{ order.shipping_address.address }}</p>
+      <p>{{ order.shipping_address.optional_address }}</p>
+      <p>
+        {{ order.shipping_address.country }}, {{ order.shipping_address.zip }}
+      </p>
+    </div>
+    <div>
+      <h4 class="">
+        Order Placed: {{ order.ordered_date }} -
+        <span class="status">Status: {{ order.get_order_status_display }}</span>
+      </h4>
+
+      <table class="">
+        <thead class="">
+          <tr>
+            <th scope="">#</th>
+            <th scope="">Title</th>
+            <th scope="">Price</th>
+            <th scope="">Quantity</th>
+            <th scope="">Total Price</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for order_item in order.games.all %}
+          <tr>
+            <th scope="row">{{ forloop.counter }}</th>
+            <td class="table_items">{{ order_item.game.title }}</td>
+            <td class="table_items">${{ order_item.game.price_per_unit }}</td>
+            <td class="table_items">
+              {{ order_item.quantity }}
+            </td>
+            <td class="table_items">
+              ${{ order_item.get_total_cart_item_price }}
+            </td>
+          </tr>
+          {% endfor %}
+          <tr>
+            <th scope="row"><b>Order Total</b></th>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td class="table_items">
+                <hr />
+                <b>${{ order.get_total_cart_price }}</b>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </body>
+</html>
