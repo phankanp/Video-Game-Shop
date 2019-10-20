@@ -45,7 +45,10 @@
       <p>{{ order.billing_address.address }}</p>
       <p>{{ order.billing_address.optional_address }}</p>
       <p>
-        {{ order.billing_address.country }}, {{ order.billing_address.zip }}
+        {{ order.billing_address.city }}, {{ order.billing_address.state }} {{ order.billing_address.zip }}
+      </p>
+      <p>
+        {{ order.billing_address.country.name }}
       </p>
     </div>
 
@@ -58,7 +61,10 @@
       <p>{{ order.shipping_address.address }}</p>
       <p>{{ order.shipping_address.optional_address }}</p>
       <p>
-        {{ order.shipping_address.country }}, {{ order.shipping_address.zip }}
+        {{ order.shipping_address.city }}, {{ order.shipping_address.state }} {{ order.shipping_address.zip }}
+      </p>
+      <p>
+        {{ order.shipping_address.country.name }}
       </p>
     </div>
     <div>

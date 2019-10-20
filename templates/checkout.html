@@ -79,7 +79,7 @@
           </div>
 
           <div class="row">
-            <div class="col-md-5 mb-3">
+            <div class="col-md-6 mb-1">
               <label for="country">Country</label>
   
               {{ form.country }}
@@ -88,9 +88,27 @@
               </div>
             </div>
 
-            <div class="col-md-3 mb-3">
+            <div class="col-md-6 mb-1">
+              <label for="state">State</label>
+  
+              {{ form.state }}
+              <div class="invalid-feedback">
+                Please select a valid state.
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label for="city">City</label>
+              {{ form.city }}
+              <div class="invalid-feedback">
+                City is required.
+              </div>
+            </div>
+
+            <div class="col-md-6 mb-3">
               <label for="zip">Zip</label>
-    
               {{ form.zip }}
               <div class="invalid-feedback">
                 Zip code required.
@@ -133,7 +151,7 @@
           </div>
 
           <div class="row">
-            <div class="col-md-5 mb-3">
+            <div class="col-md-6 mb-1">
               <label for="country">Country</label>
         
               {{ form.billing_country }}
@@ -142,9 +160,28 @@
               </div>
             </div>
 
-            <div class="col-md-3 mb-3">
+            <div class="col-md-6 mb-1">
+              <label for="state">State</label>
+  
+              {{ form.billing_state }}
+              <div class="invalid-feedback">
+                Please select a valid state.
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label for="billing_city">City</label>
+              {{ form.billing_city }}
+              <div class="invalid-feedback">
+                City is required.
+              </div>
+            </div>
+
+
+            <div class="col-md-6 mb-3">
               <label for="zip">Zip</label>
-        
               {{ form.billing_zip }}
               <div class="invalid-feedback">
                 Zip code required.

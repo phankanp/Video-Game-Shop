@@ -157,8 +157,9 @@ def checkout_view(request):
     if request.method == 'POST' and request.is_ajax():
 
         form = CheckoutForm(request.POST)
-       
 
+        print(form)
+       
         try:
             order = Order.objects.get(user=request.user, ordered=False)
             
@@ -169,17 +170,22 @@ def checkout_view(request):
                     'optional_address')
                 shipping_country = form.cleaned_data.get('country')
                 shipping_zip = form.cleaned_data.get('zip')
+                shipping_city = form.cleaned_data.get('city')
+                shipping_state = form.cleaned_data.get('state')
                 same_billing_address = form.cleaned_data.get(
                     'same_billing_address')
                 
-            
-                if '' not in (shipping_main_address, shipping_country, shipping_zip):
+                print(shipping_state + '*****************************')
+
+                if '' not in (shipping_main_address, shipping_country, shipping_zip, shipping_city):
                     shipping_address = Address(
                         user=request.user,
                         address=shipping_main_address,
                         optional_address=shipping_optional_address,
                         country=shipping_country,
-                        zip=shipping_zip
+                        zip=shipping_zip,
+                        city=shipping_city,
+                        state=shipping_state
                     )
                     shipping_address.save()
 
@@ -195,14 +201,18 @@ def checkout_view(request):
                     billing_optional_address = form.cleaned_data.get('billing_optional_address')
                     billing_country = form.cleaned_data.get('billing_country')
                     billing_zip = form.cleaned_data.get('billing_zip')
+                    billing_city = form.cleaned_data.get('billing_city')
+                    billing_state = form.cleaned_data.get('billing_state')
 
-                    if '' not in (billing_main_address, billing_country, billing_zip):
+                    if '' not in (billing_main_address, billing_country, billing_zip, billing_city):
                         billing_address = Address(
                             user=request.user,
                             address=billing_main_address,
                             optional_address=billing_optional_address,
                             country=billing_country,
-                            zip=billing_zip
+                            zip=billing_zip,
+                            city=billing_city,
+                            state=billing_state
                         )
                     billing_address.save()
 
