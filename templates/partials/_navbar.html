@@ -1,6 +1,8 @@
 {% load static %}
 {% load shopping_bag_tags %}
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-lg">
+   
+        <div class="container">
   <a class="navbar-brand" href="{% url 'index' %}">
     <img
       src="{% static 'img/navbar_icon.png' %}"
@@ -74,4 +76,6 @@
       {% endif %}
     </ul>
   </div>
+</div>
+
 </nav>
