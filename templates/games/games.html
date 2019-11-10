@@ -9,12 +9,8 @@
   <div class="center">
     <div class="row justify-content-center">
       {% for game in games %}
-      <div class="col-12 col-md-6 col-lg-4">
-
-        <div
-          class="card shadow-lg hvr-grow"
-          style="width: 18rem;"
-        >
+      <div class="col-12 col-md-6 col-xl-4">
+        <div class="card shadow-lg hvr-grow" style="width: 18rem;">
           <a
             data-toggle="modal"
             data-target="#modal{{ game.id }}"
@@ -29,14 +25,14 @@
           </a>
         </div>
       </div>
-      
+
       <!-- Modal -->
       <div
         class="modal fade mt-5 rounded-0"
         id="modal{{ game.id }}"
         tabindex="-1"
         role="dialog"
-        aria-labelledby="exampleModalLongTitle"
+        aria-labelledby="ModalLongTitle"
         aria-hidden="true"
       >
         <div class="modal-dialog" role="document">

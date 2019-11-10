@@ -157,8 +157,6 @@ def checkout_view(request):
     if request.method == 'POST' and request.is_ajax():
 
         form = CheckoutForm(request.POST)
-
-        print(form)
        
         try:
             order = Order.objects.get(user=request.user, ordered=False)
