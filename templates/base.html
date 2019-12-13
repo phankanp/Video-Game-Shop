@@ -16,7 +16,7 @@
     <!-- Lightbox -->
     <link rel="stylesheet" href="{% static 'css/lightbox.min.css' %}" />
   </head>
-  <body>
+  <body class="mb-3">
     <!-- Navbar -->
     {% include 'partials/_navbar.html' %} {% include 'partials/_alerts.html' %}
     {% block content %}{% endblock %} {% block extra_body %} {% endblock %}
@@ -26,7 +26,6 @@
     <script src="{% static 'js/lightbox.min.js' %}"></script>
     <script src="{% static 'js/project_main.js' %}"></script>
 
-    {% block extra_scripts %}
-    {% endblock extra_scripts %}
+    {% block extra_scripts %} {% endblock extra_scripts %}
   </body>
 </html>

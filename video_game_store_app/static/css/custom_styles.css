@@ -1,13 +1,18 @@
 html {
   margin: 0px;
-  height: 100%;
-  width: 100%;
+  min-height: 100%;
+  min-width: 100%;
 }
 
 body {
   margin: 0px;
   min-height: 100%;
-  width: 100%;
+  min-width: 100%;
+  background-size: cover;
+  -ms-background-size: cover;
+  -o-background-size: cover;
+  -moz-background-size: cover;
+  -webkit-background-size: cover;
   background-image: linear-gradient(to top, #f43b47 0%, #453a94 100%);
 }
 .card {
@@ -139,12 +144,12 @@ body {
   transition-delay: 0.2s;
 }
 
-.fa-shopping-bag{
-  font-size:26px; 
+.fa-shopping-bag {
+  font-size: 26px;
   color: skyblue;
 }
 
-.shopping-bag-text{
+.shopping-bag-text {
   color: black;
 }
 
@@ -162,9 +167,9 @@ body {
 }
 
 @media (max-width: 768px) {
- .navbar-nav .nav-item:not(:last-child) {
-   border-right: none;
- }
+  .navbar-nav .nav-item:not(:last-child) {
+    border-right: none;
+  }
 }
 
 .navbar .navbar-collapse {
@@ -175,27 +180,26 @@ body {
   /* position: absolute; */
   margin-top: 120px;
   /* margin-left: 120px; */
-  width: 50% !important; 
-
+  width: 50% !important;
 }
 
 table th {
-  text-align: center; 
+  text-align: center;
 }
 
 table td {
-  text-align: center; 
+  text-align: center;
 }
 
-.btn-checkout{
+.btn-checkout {
   margin-top: 25px;
 }
 
-.fa-minus{
+.fa-minus {
   margin-right: 2px;
 }
 
-.fa-plus{
+.fa-plus {
   margin-left: 2px;
 }
 
@@ -225,18 +229,25 @@ table td {
 }
 
 .jumbotron {
-  background: #2193b0;  /* fallback for old browsers */
-  background: -webkit-linear-gradient(to right, #6dd5ed, #2193b0);  /* Chrome 10-25, Safari 5.1-6 */
-  background: linear-gradient(to right, #6dd5ed, #2193b0); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  background: #2193b0; /* fallback for old browsers */
+  background: -webkit-linear-gradient(
+    to right,
+    #6dd5ed,
+    #2193b0
+  ); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(
+    to right,
+    #6dd5ed,
+    #2193b0
+  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 }
 
 .gamesModal {
   background-color: #7f5a83;
-background-image: linear-gradient(315deg, #7f5a83 0%, #0d324d 74%);
-
+  background-image: linear-gradient(315deg, #7f5a83 0%, #0d324d 74%);
 }
 
-.card-img-top{
+.card-img-top {
   width: 18rem;
   height: 22rem;
 }
