@@ -1,0 +1,98 @@
+{% extends '_base.html' %}{% block content %}
+
+<div class="container">
+  <h1 class="platformTitle">{{ platform }}</h1>
+  <hr />
+</div>
+
+<div class="container">
+  <div class="center">
+    <div class="row justify-content-center">
+      {% for game in games %}
+      <div class="col-12 col-md-6 col-xl-4">
+        <div class="card shadow-lg hvr-grow" style="width: 18rem;">
+          <a
+            data-toggle="modal"
+            data-target="#modal{{ game.id }}"
+            class="card-link"
+          >
+            <img src="{{ game.box_art }}" class="card-img-top" alt="..." />
+
+            <div class="card-body">
+              <h5 class="card-title">{{ game.title }}</h5>
+              <h6 class="card-title">${{ game.price_per_unit }}</h6>
+            </div>
+          </a>
+        </div>
+      </div>
+
+      <!-- Modal -->
+      <div
+        class="modal fade mt-5 rounded-0"
+        id="modal{{ game.id }}"
+        tabindex="-1"
+        role="dialog"
+        aria-labelledby="ModalLongTitle"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div
+              class="modal-body text-center gamesModal border-top-0 border-bottom-0"
+            >
+              <div class="row text-white ">
+                <div>
+                  <div class="col">
+                    <img
+                      src="{{ game.box_art }}"
+                      class="shadow-lg "
+                      alt="..."
+                      style="height:375px; width:300px"
+                    />
+                  </div>
+                  <div class="col">
+                    <div class="toast-body">
+                      <h3 class="mt-0">{{ game.title }}</h3>
+                    </div>
+                    <div class="toast-body">
+                      <span
+                        class="mt-0 badge badge-pill badge-success rounded-0 shadow-lg"
+                        >Developer: {{ game.developer }}</span
+                      >
+                      <span
+                        class="mt-0 badge badge-pill badge-success rounded-0 shadow-lg"
+                        >Release Date: {{ game.release_date }}</span
+                      >
+                    </div>
+                    <div class="toast-body">
+                      {{ game.description }}
+                    </div>
+                    <div class="toast-body">
+                      {% for tag in game.genre_tages %}
+                      <span
+                        class="badge badge-pill badge-primary rounded-0 shadow-lg"
+                      >
+                        {{ tag }}
+                      </span>
+                      {% endfor %}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer bg-dark border-top-0 rounded-0">
+                <a
+                  href="{{ game.get_add_to_cart_url }}"
+                  class="btn btn-primary btn-lg btn-block shadow-lg"
+                >
+                  $60 - Add to Cart
+                </a>
+              </div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+{% endblock %}

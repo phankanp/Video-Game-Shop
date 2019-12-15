@@ -27,6 +27,8 @@ DEBUG = int(os.environ.get('DEBUG', default=0))
 
 ALLOWED_HOSTS = []
 
+STRIPE_TEST_PUBLISHABLE_KEY=os.environ.get('STRIPE_TEST_PUBLISHABLE_KEY')
+STRIPE_TEST_SECRET_KEY=os.environ.get('STRIPE_TEST_SECRET_KEY')
 
 # Application definition
 
@@ -42,11 +44,15 @@ INSTALLED_APPS = [
     # Local
     'users.apps.UsersConfig',
     'pages.apps.PagesConfig',
+    'games.apps.GamesConfig',
+    'orders.apps.OrdersConfig',
 
     # Third-party
     'crispy_forms',
     'allauth',
     'allauth.account',
+    'django_countries',
+
 ]
 
 MIDDLEWARE = [

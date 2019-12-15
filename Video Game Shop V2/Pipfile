@@ -11,6 +11,9 @@ django = "==2.2.7"
 psycopg2-binary = "==2.8.4"
 django-crispy-forms = "==1.8.0"
 django-allauth = "==0.40.0"
+django-countries = "*"
+stripe = "==2.32.0"
+xhtml2pdf = "*"
 
 [requires]
 python_version = "3.7"
