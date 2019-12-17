@@ -21,14 +21,20 @@
     />
     <!-- Custom -->
     <link rel="stylesheet" href="{% static 'css/base.css' %}" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.1/css/lightbox.min.css"
+    />
   </head>
   <body class="mb-3">
-    {% include 'partials/_navbar.html' %}
-    {% block content %}{% endblock %} {% block extra_body %} {% endblock %}
+    {% include 'partials/_navbar.html' %} {% include 'partials/_alerts.html' %} 
+    
+    {% block content %}{% endblock %} 
+    {% block extra_body %} {% endblock %}
 
     <script
-      src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
-      integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+      src="https://code.jquery.com/jquery-3.4.1.min.js"
+      integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
       crossorigin="anonymous"
     ></script>
     <script
@@ -41,7 +47,8 @@
       integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
       crossorigin="anonymous"
     ></script>
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.1/css/lightbox.css"></script>
+    <script src="{% static 'js/base.js' %}"></script>
     {% block extra_scripts %} {% endblock extra_scripts %}
   </body>
 </html>

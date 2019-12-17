@@ -20,13 +20,15 @@ from .render import Render
 
 import stripe
 import json
-# Set your secret key: remember to change this to your live secret key in production
-# See your keys here: https://dashboard.stripe.com/account/apikeys
+
 stripe.api_key = settings.STRIPE_TEST_SECRET_KEY
 
 # Create your views here.
 
+
 class CartSummaryView(LoginRequiredMixin, View):
+    print(stripe.api_key)
+
     def get(self, request, *args, **kwargs):
         try:
             order = Order.objects.get(user=self.request.user, ordered=False)
@@ -38,6 +40,7 @@ class CartSummaryView(LoginRequiredMixin, View):
             messages.warning(self.request, "Shopping Cart is empty")
 
             return redirect("/")
+
 
 class OrdersView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
@@ -52,21 +55,22 @@ class OrdersView(LoginRequiredMixin, View):
 
             return redirect("/")
 
+
 def payment_view(request):
 
     if request.method == 'POST':
         order = Order.objects.get(user=request.user, ordered=False)
-        
+
         token = request.POST.get('stripeToken')
-      
-        try: 
+
+        try:
             charge = stripe.Charge.create(
                 amount=int(order.get_total_cart_price() * 100),
                 currency='usd',
                 description='Order charge',
                 source=token,
             )
-            
+
             payment = Payment()
             payment.stripe_charge_id = charge.id
             payment.user = request.user
@@ -88,36 +92,36 @@ def payment_view(request):
         except stripe.error.CardError as e:
             # Since it's a decline, stripe.error.CardError will be caught
             body = e.json_body
-            err  = body.get('error', {})
+            err = body.get('error', {})
 
             messages.error(request, f"{err.get('message')}")
-            return redirect("/games/checkout")
+            return redirect("/orders/checkout")
         except stripe.error.RateLimitError as e:
             # Too many requests made to the API too quickly
             messages.error(request, "Rate limit error")
-            return redirect("/games/checkout")
+            return redirect("/orders/checkout")
         except stripe.error.InvalidRequestError as e:
             # Invalid parameters were supplied to Stripe's API
             messages.error(request, "Invalid parameters error")
-            return redirect("/games/checkout")
+            return redirect("/orders/checkout")
         except stripe.error.AuthenticationError as e:
             # Authentication with Stripe's API failed
             # (maybe you changed API keys recently)
             messages.error(request, "Stripe authentication error")
-            return redirect("/games/checkout")
+            return redirect("/orders/checkout")
         except stripe.error.APIConnectionError as e:
             # Network communication with Stripe failed
             messages.error(request, "Network communication error")
-            return redirect("/games/checkout")
+            return redirect("/orders/checkout")
         except stripe.error.StripeError as e:
             # Display a very generic error to the user, and maybe send
             # yourself an email
-            messages.error(request, "Something went wrong. Charge did not go through, please try again!")
-            return redirect("/games/checkout")
+            messages.error(
+                request, "Something went wrong. Charge did not go through, please try again!")
+            return redirect("/orders/checkout")
         except Exception as e:
             # Something else happened, completely unrelated to Stripe
             messages.error(request, "Code Error")
-
 
 
 def checkout_view(request):
@@ -125,12 +129,12 @@ def checkout_view(request):
     if request.method == 'POST' and request.is_ajax():
 
         form = CheckoutForm(request.POST)
-       
+
         try:
             order = Order.objects.get(user=request.user, ordered=False)
-            
+
             if form.is_valid():
-               
+
                 shipping_main_address = form.cleaned_data.get('address')
                 shipping_optional_address = form.cleaned_data.get(
                     'optional_address')
@@ -140,7 +144,7 @@ def checkout_view(request):
                 shipping_state = form.cleaned_data.get('state')
                 same_billing_address = form.cleaned_data.get(
                     'same_billing_address')
-                
+
                 print(shipping_state + '*****************************')
 
                 if '' not in (shipping_main_address, shipping_country, shipping_zip, shipping_city):
@@ -163,8 +167,10 @@ def checkout_view(request):
                     return redirect('checkout')
 
                 if (same_billing_address != True):
-                    billing_main_address = form.cleaned_data.get('billing_address')
-                    billing_optional_address = form.cleaned_data.get('billing_optional_address')
+                    billing_main_address = form.cleaned_data.get(
+                        'billing_address')
+                    billing_optional_address = form.cleaned_data.get(
+                        'billing_optional_address')
                     billing_country = form.cleaned_data.get('billing_country')
                     billing_zip = form.cleaned_data.get('billing_zip')
                     billing_city = form.cleaned_data.get('billing_city')
@@ -189,14 +195,15 @@ def checkout_view(request):
                     billing_address.save()
 
                     order.billing_address = billing_address
-                    order.save() 
-                
-                return JsonResponse({"success":True}, status=200)
-            #     return redirect('checkout')
-            
-            messages.warning(request, "Please fill in the required shipping address fields")
+                    order.save()
 
-            return JsonResponse({"success":False}, status=400)
+                return JsonResponse({"success": True}, status=200)
+            #     return redirect('checkout')
+
+            messages.warning(
+                request, "Please fill in the required shipping address fields")
+
+            return JsonResponse({"success": False}, status=400)
             # return redirect("checkout")
         except ObjectDoesNotExist:
             messages.warning(request, "Shopping Cart is empty")
@@ -211,7 +218,7 @@ def checkout_view(request):
 
 @require_POST
 def add_coupon_view(request):
-    
+
     form = CouponForm(request.POST)
 
     if form.is_valid():
@@ -227,12 +234,13 @@ def add_coupon_view(request):
             order.save()
 
             messages.success(request, "Successfully added coupon")
-            
+
             return redirect("checkout")
         except ObjectDoesNotExist:
             messages.info(request, "No active order")
-            
-            return redirect("checkout")    
+
+            return redirect("checkout")
+
 
 @login_required
 def add_to_cart(request, pk):
@@ -308,13 +316,11 @@ def remove_from_cart(request, pk):
         return redirect("single_game", pk=pk)
 
 
-
 def admin_order_pdf(request, pk):
     order = get_object_or_404(Order, pk=pk)
-    
+
     context = {
         'order': order
     }
-    
-    return Render.render('invoice.html', context)
 
+    return Render.render('invoice.html', context)

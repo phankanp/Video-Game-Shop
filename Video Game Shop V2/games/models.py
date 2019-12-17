@@ -33,7 +33,7 @@ class Game(models.Model):
     genre_tages = ArrayField(models.CharField(
         max_length=200),  default=list, blank=True)
 
-    box_art = models.CharField(max_length=100)
+    box_art = models.CharField(max_length=200)
 
     def get_add_to_cart_url(self):
         return reverse("add_to_cart", kwargs={

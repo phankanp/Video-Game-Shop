@@ -1,14 +1,15 @@
 {% extends '_base.html' %}{% block content %}
 
 <div class="container">
-  <h1 class="platformTitle">{{ platform }}</h1>
+  <h1 class="platformTitle">Search Results</h1>
   <hr />
 </div>
 
 <div class="container">
+  {% if game_list %}
   <div class="center">
     <div class="row justify-content-center">
-      {% for game in games %}
+      {% for game in game_list %}
       <div class="col-12 col-md-6 col-xl-3">
         <div class="card shadow-lg hvr-grow" style="width: 18rem;">
           <a
@@ -94,5 +95,8 @@
       {% endfor %}
     </div>
   </div>
+  {% else %}
+  <p class="text-center text-white">No Games Found! Please Try Again!</p>
+  {% endif %}
 </div>
 {% endblock %}
