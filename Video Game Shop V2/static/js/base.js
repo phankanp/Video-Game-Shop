@@ -29,3 +29,23 @@ $(document).on("submit", "#checkoutForm", function(e) {
     }
   });
 });
+
+
+$("#country").change(function(e) {
+  if ($("#country option:selected").val() === "US" ) {
+    $("#state").prop( "disabled", false );
+    $("#billing_state").prop( "disabled", false );
+
+  } else {
+    $("#state").prop( "disabled", true );
+    $("#billing_state").prop( "disabled", true );
+  }
+})
+
+$("#billing_country").change(function(e) {
+  if ($("#billing_country option:selected").val() === "US") {
+    $("#billing_state").prop( "disabled", false );
+  } else {
+    $("#billing_state").prop( "disabled", true );
+  }
+})
