@@ -1,0 +1,116 @@
+{% extends '_base.html' %} {% block content %}
+<div class="container">
+  <div class="jumbotron mt-4 text-center">
+    <h1 class="display-4">The Video Game Store</h1>
+    <p class="lead">
+      <b>Click on the console images below to shop the platform collections!</b>
+    </p>
+    <hr class="my-4" />
+    <p>
+      <b
+        >Tech Stack: Python | Django | JavaScript(jQuery) | Bootstrap |
+        PostgreSQL | Stripe Payments</b
+      >
+    </p>
+    <div class="pt-2">
+      <a
+        href="https://github.com/phankanp/Video-Game-Shop"
+        class="btn btn-outline-dark"
+        >GitHub <i class="fab fa-github"></i
+      ></a>
+    </div>
+  </div>
+
+  <div class="row row-with-wide-cards">
+    <div class="col-md-3 col-sm-12 d-flex">
+      <div class="hovereffect ">
+        <div class="card bg-dark text-white topRowImg flex-fill">
+          <img
+            src="https://res.cloudinary.com/djmrmontu/image/upload/v1576551307/Box%20Art/xbox-2958864_1280_bentgf.jpg"
+            class="card-img shadow-lg "
+            alt="..."
+          />
+          <div class="card-img-overlay">
+            <h2 class="card-title">Xbox</h2>
+            <a href="{% url 'games_list' 'X' %}" class="btn btn-primary info"
+              >Shop Now!</a
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3 col-sm-12 d-flex">
+      <div class="hovereffect">
+        <div class="card bg-dark text-white topRowImg">
+          <img
+            src="https://res.cloudinary.com/djmrmontu/image/upload/v1576551297/Box%20Art/ps4-2326600_1280_t5thir.jpg"
+            class="card-img shadow-lg"
+            alt="..."
+          />
+          <div class="card-img-overlay">
+            <h2 class="card-title">PS4</h2>
+            <a href="{% url 'games_list' 'PS' %}" class="btn btn-primary info"
+              >Shop Now!</a
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3 col-sm-12 d-flex">
+      <div class="hovereffect">
+        <div class="card bg-dark text-white topRowImg">
+          <img
+            src="https://res.cloudinary.com/djmrmontu/image/upload/v1576551264/Box%20Art/nintendo-switch-3953601_1280_girqyd.jpg"
+            class="card-img shadow-lg"
+            alt="..."
+          />
+          <div class="card-img-overlay">
+            <h2 class="card-title">Switch</h2>
+            <a href="{% url 'games_list' 'S' %}" class="btn btn-primary info"
+              >Shop Now!</a
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3 col-sm-12 d-flex">
+      <div class="hovereffect">
+        <div class="card bg-dark text-white topRowImg">
+          <img
+            src="https://res.cloudinary.com/djmrmontu/image/upload/v1576551289/Box%20Art/keyboard-70506_1280_uachf7.jpg"
+            class="card-img shadow-lg"
+            alt="..."
+          />
+          <div class="card-img-overlay">
+            <h2 class="card-title">PC</h2>
+            <a href="{% url 'games_list' 'PC' %}" class="btn btn-primary info"
+              >Shop Now!</a
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="center">
+      <div class="row justify-content-center">
+        {% for game in games %}
+        <div class="col-12 col-md-6 col-xl-3">
+          <div class="card shadow-lg hvr-grow" style="width: 18rem; cursor: default">
+            <a
+              data-toggle="modal"
+              data-target="#modal{{ game.id }}"
+              class="card-link"
+            >
+              <img src="{{ game.box_art }}" class="card-img-top" alt="..." />
+  
+              <div class="card-body">
+                <h5 class="card-title">{{ game.title }}</h5>
+              </div>
+            </a>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+</div>
+{% endblock %}

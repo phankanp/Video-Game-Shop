@@ -1,0 +1,42 @@
+{% extends "_base.html" %} {% load crispy_forms_tags %} 
+{% block head_title%}Login {% endblock %} {% block content %}
+
+<div class="container mt-5">
+  <div class="row justify-content-center align-items-center wow fadeIn">
+    <div class="col-6 d-flex justify-content-center align-items-center mb-3">
+      <div
+        class="card"
+        style="width: 25rem; padding: 15px;"
+        class="col-md-12 shadow-lg"
+      >
+        <h1 class="text-center">Login</h1>
+        <form class="login" method="POST" action="{% url 'account_login' %}">
+          {% csrf_token %} {{ form|crispy }} {% if redirect_field_value %}
+          <input
+            type="hidden"
+            name="{{ redirect_field_name }}"
+            value="{{ redirect_field_value }}"
+          />
+          {% endif %}
+          <button class="btn btn-primary btn-block" type="submit">Login</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="row justify-content-center align-items-center wow fadeIn">
+    <div class="col-6 d-flex justify-content-center align-items-center ">
+      <div
+        class="card text-center"
+        style="width: 25rem; padding: 15px;"
+        class="col-md-12 shadow-lg"
+      >
+        <h1>Guest Login</h1>
+        <p><b>Username: Guest</b></p>
+        <p><b>Password: guestPassword</b></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
