@@ -251,3 +251,7 @@ table td {
   width: 18rem;
   height: 22rem;
 }
+
+.checked {
+  color: orange;
+}
