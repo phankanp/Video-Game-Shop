@@ -3,7 +3,7 @@
   <div class="jumbotron mt-4 text-center">
     <h1 class="display-4">The Video Game Store</h1>
     <p class="lead">
-      <b>Click on the images below to shop the platform collections!</b>
+      <b>Click on the console images below to shop the platform collections!</b>
     </p>
     <hr class="my-4" />
     <p>
@@ -21,11 +21,11 @@
     </div>
   </div>
   <div class="row row-with-wide-cards">
-    <div class="col-md-4 col-sm-12 d-flex">
+    <div class="col-md-3 col-sm-12 d-flex">
       <div class="hovereffect ">
         <div class="card bg-dark text-white topRowImg flex-fill">
           <img
-            src="https://cdn.pixabay.com/photo/2017/11/18/00/10/xbox-2958864_1280.jpg"
+            src="https://res.cloudinary.com/djmrmontu/image/upload/v1576551307/Box%20Art/xbox-2958864_1280_bentgf.jpg"
             class="card-img shadow-lg "
             alt="..."
           />
@@ -38,11 +38,11 @@
         </div>
       </div>
     </div>
-    <div class="col-md-4 col-sm-12">
+    <div class="col-md-3 col-sm-12 d-flex">
       <div class="hovereffect">
         <div class="card bg-dark text-white topRowImg">
           <img
-            src="https://cdn.pixabay.com/photo/2017/05/19/14/05/ps4-2326600_1280.jpg"
+            src="https://res.cloudinary.com/djmrmontu/image/upload/v1576551297/Box%20Art/ps4-2326600_1280_t5thir.jpg"
             class="card-img shadow-lg"
             alt="..."
           />
@@ -55,11 +55,11 @@
         </div>
       </div>
     </div>
-    <div class="col-md-4 col-sm-12">
+    <div class="col-md-3 col-sm-12 d-flex">
       <div class="hovereffect">
         <div class="card bg-dark text-white topRowImg">
           <img
-            src="https://cdn.pixabay.com/photo/2019/01/24/23/54/nintendo-switch-3953601_1280.jpg"
+            src="https://res.cloudinary.com/djmrmontu/image/upload/v1576551264/Box%20Art/nintendo-switch-3953601_1280_girqyd.jpg"
             class="card-img shadow-lg"
             alt="..."
           />
@@ -72,13 +72,11 @@
         </div>
       </div>
     </div>
-  </div>
-  <div class="row">
-    <div class="col-md-6 col-sm-12">
+    <div class="col-md-3 col-sm-12 d-flex">
       <div class="hovereffect">
-        <div class="card bg-dark text-white">
+        <div class="card bg-dark text-white topRowImg">
           <img
-            src="https://cdn.pixabay.com/photo/2012/12/17/19/14/keyboard-70506_1280.jpg"
+            src="https://res.cloudinary.com/djmrmontu/image/upload/v1576551289/Box%20Art/keyboard-70506_1280_uachf7.jpg"
             class="card-img shadow-lg"
             alt="..."
           />
@@ -91,20 +89,54 @@
         </div>
       </div>
     </div>
-    <div class="col-md-6 col-sm-12">
-      <div class="hovereffect">
-        <div class="card bg-dark text-white">
-          <img
-            src="https://cdn.pixabay.com/photo/2016/12/01/18/17/mobile-phone-1875813_1280.jpg"
-            class="card-img"
-            alt="..."
-          />
-          <div class="card-img-overlay">
-            <h2 class="card-title">Mobile</h2>
-            <a href="{% url 'games_list' 'M' %}" class="btn btn-primary info"
-              >Shop Now!</a
+  </div>
+
+  <div class="d-flex justify-content-center">
+    <div
+      class="card text-white bg-primary mb-3 text-center"
+      style="max-width: 30rem;"
+    >
+      <div class="card-header display-4">From Our Catalog</div>
+    </div>
+  </div>
+
+  <div class="row" style="text-align: center;">
+    <div style="width: 90%; margin: auto;">
+      <div class="container-fluid">
+        <div class="row">
+          {% for game in games %}
+
+          <div class="col-12 col-md-6 col-xl-4">
+            <div
+              class="card shadow-lg hvr-grow mx-auto"
+              style="width: 18rem; cursor: default"
             >
+              <a
+                data-toggle="modal"
+                data-target="#modal{{ game.id }}"
+                class="card-link"
+              >
+                <img src="{{ game.box_art }}" class="card-img-top" alt="..." />
+
+                <div class="card-body">
+                  <h5 class="card-title">{{ game.title }}</h5>
+                </div>
+              </a>
+              <hr />
+              <div class="row justify-content-center mb-3">
+                <div class="col-auto">
+                  <a href="#!"><i class="far fa-eye"></i></a>
+                </div>
+                <div class="col-auto">
+                  <a href="#!"><i class="fas fa-info"></i></a>
+                </div>
+                <div class="col-auto">
+                  <a href="#!"><i class="far fa-heart"></i></a>
+                </div>
+              </div>
+            </div>
           </div>
+          {% endfor %}
         </div>
       </div>
     </div>
