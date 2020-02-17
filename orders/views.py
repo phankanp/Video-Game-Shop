@@ -249,7 +249,7 @@ def add_coupon_view(request):
 
 @login_required
 def add_to_cart(request, pk):
-
+    print(request)
     game = get_object_or_404(Game, pk=pk)
 
     msg = ''
@@ -298,11 +298,12 @@ def add_to_cart(request, pk):
 @login_required
 def remove_from_cart(request, pk):
     game = get_object_or_404(Game, pk=pk)
+    print(request)
+    msg = ''
 
     order_query = Order.objects.filter(user=request.user, ordered=False)
 
     if order_query.exists():
-
         order = order_query[0]
 
         if order.games.filter(game_id=game.pk).exists():
@@ -315,14 +316,20 @@ def remove_from_cart(request, pk):
                 order_item.quantity -= 1
 
                 order_item.save()
+                msg = f'{game.title} was removed from your cart'
 
-                messages.info(
-                    request, f'{game.title} was removed from your cart')
-                return redirect("shopping-cart")
             elif order_item.quantity == 1:
+                order_item.quantity -= 1
                 order_item.delete()
-                messages.info(
-                    request, f'{game.title} was removed from your cart')
+                msg = f'{game.title} was removed from your cart'
+                if request.is_ajax():
+
+                    json_data = {
+                        'cartItemCount': order_item.quantity,
+                        'gameId': game.id,
+                        'msg': msg
+                    }
+                    return JsonResponse(json_data)
 
             if not order.games.exists():
                 order.delete()
@@ -334,6 +341,15 @@ def remove_from_cart(request, pk):
     else:
         messages.info(request, 'No active orders')
         return redirect("single_game", pk=pk)
+
+    if request.is_ajax():
+
+        json_data = {
+            'cartItemCount': order_item.quantity,
+            'gameId': game.id,
+            'msg': msg
+        }
+        return JsonResponse(json_data)
 
 
 def admin_order_pdf(request, pk):

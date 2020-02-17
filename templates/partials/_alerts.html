@@ -1,16 +1,8 @@
-{% load static %} {% block content %}
-
-{% if messages %} 
-{% for message in messages %} 
-{% if message.tags == 'success'%}
-   toastr.{{ message.tags }}("{{ message }}")
-{% elif message.tags == 'info' %}
-    toastr.{{ message.tags }}({{ message }})
-{% elif message.tags == 'warning' %}
-    toastr.{{ message.tags }}("{{ message }}")
-{% elif message.tags == 'error' %}
-    toastr.{{ message.tags }}("{{ message }}")
-{% endif %}
-{% endfor %} 
-{% endif %}
-{% endblock %}
+{% load static %} {% if messages %} {% for message in messages %}
+<div class="alert alert-{{ message.tags }} text-center" role="alert">
+  {{ message }}
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+{% endfor %} {% endif %}

@@ -36,6 +36,7 @@
       $(document).ready(function() {
         let gameForm = $('.form-game-ajax');
         let cartAddForm = $('.form-cart-ajax');
+        let cartRemoveForm = $('.form-remove-ajax');
 
         gameForm.submit(function(event) {
           event.preventDefault();
@@ -83,6 +84,36 @@
               navbarCount.text(data.cartItemCount);
 
               toastr.success(data.msg);
+            },
+            error: function(errorData) {
+              console.log('error');
+              console.log(errorData);
+            }
+          });
+        });
+
+        cartRemoveForm.submit(function(event) {
+          event.preventDefault();
+          let thisForm = $(this);
+          let actionEndpoint = thisForm.attr('action');
+          let httpMethod = thisForm.attr('method');
+          let formData = thisForm.serialize();
+
+          $.ajax({
+            url: actionEndpoint,
+            method: httpMethod,
+            data: formData,
+            success: function(data) {
+              let cartCount = $('.cart-count');
+              cartCount.text(data.cartItemCount);
+              let navbarCount = $('.navbar-cart-count');
+              navbarCount.text(data.cartItemCount);
+              toastr.success(data.msg);
+              if (data.cartItemCount < 1) {
+                setTimeout(function() {
+                  window.location.href = 'http://127.0.0.1:8000/';
+                }, 2000);
+              }
             },
             error: function(errorData) {
               console.log('error');

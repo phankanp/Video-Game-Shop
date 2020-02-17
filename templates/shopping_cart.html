@@ -26,13 +26,13 @@
               <div class="btn-group btn-group-toggle">
                 <form
                   method="POST"
-                  action="{% url 'add_to_cart' order_item.game.id %}"
-                  class="form  form-cart-ajax"
+                  action="{% url 'remove_from_cart' order_item.game.id %}"
+                  class="form  form-remove-ajax"
                 >
                   {% csrf_token %}
                   <button
                     type="submit"
-                    class="btn btn-primary btn-sm bg-transparent border-0"
+                    class="btn btn-danger btn-sm bg-transparent border-0"
                   >
                     <i class="fas fa-minus"></i>
                   </button>
