@@ -8,5 +8,6 @@
 SECRET_KEYS = [
     # start with your Django secret key like this:
     "SECRET_KEY",
-    "STRIPE_SECRET_KEY"
+    "STRIPE_SECRET_KEY",
+    "STRIPE_TEST_SECRET_KEY"
 ]

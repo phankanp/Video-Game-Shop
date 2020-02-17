@@ -34,6 +34,7 @@ STRIPE_SECRET_KEY = "sk_test_aS7Hdm4G3IAKmGz5kPNmsy5o00V9L98isS"
 # Application definition
 
 INSTALLED_APPS = [
+    'orders.apps.OrdersConfig',
     'pages.apps.PagesConfig',
     'games.apps.GamesConfig',
     'django.contrib.admin',
