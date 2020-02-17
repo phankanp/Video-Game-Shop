@@ -11,6 +11,7 @@ from django.contrib import messages
 from django.conf import settings
 from django.http import HttpResponse
 from django.http import JsonResponse
+from django.db.models import Q
 from .render import Render
 
 
@@ -98,3 +99,15 @@ class GameDetailView(DetailView):
             context['trailer'] = trailer_results[0].get('data').get('max')
 
         return context
+
+
+class SearchResultsListView(ListView):
+    model = Game
+    context_object_name = 'game_list'
+    template_name = 'search_results.html'
+
+    def get_queryset(self):  # new
+        query = self.request.GET.get('q')
+        return Game.objects.filter(
+            Q(title__icontains=query)
+        )

@@ -3,12 +3,13 @@
   <div class="container">
     <a class="navbar-brand" href="{% url 'home' %}">
       <img
-        src="{% static 'img/navbar_icon.png' %}"
+        src="{% static 'images/navbar_icon.png' %}"
         width="35"
         height="35"
         class="d-inline-block align-top"
         alt=""
       />
+      The Video Game Store
     </a>
     <button
       class="navbar-toggler"
@@ -24,13 +25,13 @@
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav ml-auto">
         {% if request.user.is_authenticated %}
-        <li class="nav-item">
+        <li class="nav-item pt-1">
           <a class="nav-link active" href="{% url 'orders' %}">
             <i class="fas fa-grip-lines-vertical"></i>
             Orders
           </a>
         </li>
-        <li class="nav-item">
+        <li class="nav-item pt-1">
           <a class="nav-link active" href="{% url 'account_logout' %}">
             <i class="fas fa-sign-out-alt"></i>
             Logout
@@ -40,33 +41,38 @@
           <a class="nav-link" href="{% url 'shopping-cart' %}">
             <span class="fa-stack fa-1x">
               <i class="fa fa-shopping-bag fa-stack-2x"></i>
-              {% if not order %}
-              <span class="fa-stack-1x shopping-bag-text navbar-cart-count"
-              >0</span
-            >
-          </span>
-              {% else %}
-              <span class="fa-stack-1x shopping-bag-text navbar-cart-count"
-                >{{order.get_total_cart_quantity}}</span
+              <span class="fa-stack-1x shopping-bag-text"
+                >{{request.user|cart_item_count}}</span
               >
             </span>
-            {% endif %}
           </a>
         </li>
+        <form
+          class="form-inline pl-2 mx-auto"
+          action="{% url 'search_results' %}"
+        >
+          <input
+            name="q"
+            class="form-control mr-sm-2 text-center"
+            type="search"
+            placeholder="Search Games Library"
+            aria-label="Search Games Library"
+          />
+        </form>
         {% else %}
-        <li class="nav-item">
+        <li class="nav-item pt-1">
           <a class="nav-link active" href="{% url 'orders' %}">
             <i class="fas fa-grip-lines-vertical"></i>
             My Orders
           </a>
         </li>
-        <li class="nav-item">
+        <li class="nav-item pt-1">
           <a class="nav-link active" href="{% url 'account_login' %}">
             <i class="fas fa-sign-in-alt "></i>
             Login
           </a>
         </li>
-        <li class="nav-item">
+        <li class="nav-item pt-1">
           <a class="nav-link active" href="{% url 'account_signup' %}">
             <i class="fas fa-user-plus"></i>
             Signup
@@ -80,6 +86,18 @@
             </span>
           </a>
         </li>
+        <form
+          class="form-inline pl-2 mx-auto"
+          action="{% url 'search_results' %}"
+        >
+          <input
+            name="q"
+            class="form-control mr-sm-2 text-center"
+            type="search"
+            placeholder="Search Games Library"
+            aria-label="Search Games Library"
+          />
+        </form>
         {% endif %}
       </ul>
     </div>
