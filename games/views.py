@@ -13,6 +13,9 @@ from django.http import HttpResponse
 from django.http import JsonResponse
 from .render import Render
 
+
+from orders.models import Order
+
 import rawgpy
 import requests
 import json
@@ -29,6 +32,13 @@ PLATFORM_CHOICES = {
 
 class HomeView(ListView):
     def get(self, request, *args, **kwargs):
+        order = None
+
+        try:
+            order = Order.objects.get(user=self.request.user, ordered=False)
+        except ObjectDoesNotExist:
+            pass
+
         try:
             platform_name = self.kwargs['platform_name']
 
@@ -36,7 +46,8 @@ class HomeView(ListView):
 
             context = {
                 'games': games,
-                'platform': PLATFORM_CHOICES[platform_name]
+                'platform': PLATFORM_CHOICES[platform_name],
+                'order': order
             }
             return render(self.request, 'games/games.html', context)
         except ObjectDoesNotExist:

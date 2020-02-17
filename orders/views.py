@@ -11,6 +11,7 @@ from django.contrib import messages
 from django.conf import settings
 from django.http import HttpResponse
 from django.http import JsonResponse
+from django.template.loader import render_to_string
 
 from orders.models import OrderItem, Order, Coupon, Payment
 from games.models import Game
@@ -36,7 +37,8 @@ class CartSummaryView(LoginRequiredMixin, View):
         try:
             order = Order.objects.get(user=self.request.user, ordered=False)
             context = {
-                'order': order
+                'order': order,
+
             }
             return render(self.request, 'shopping_cart.html', context)
         except ObjectDoesNotExist:
@@ -247,7 +249,10 @@ def add_coupon_view(request):
 
 @login_required
 def add_to_cart(request, pk):
+
     game = get_object_or_404(Game, pk=pk)
+
+    msg = ''
 
     order_item, created = OrderItem.objects.get_or_create(
         game=game, user=request.user, ordered=False)
@@ -263,10 +268,11 @@ def add_to_cart(request, pk):
 
             order_item.save()
 
-            messages.info(request, f'{game.title} was added to your cart')
-            return redirect("shopping-cart")
+            msg = f'{game.title} was added to your cart'
+
+            # return redirect("shopping-cart")
         else:
-            messages.info(request, f'{game.title} was added to your cart')
+            msg = f'{game.title} was added to your cart'
 
             order.games.add(order_item)
     else:
@@ -274,7 +280,18 @@ def add_to_cart(request, pk):
         order = Order.objects.create(
             user=request.user, ordered_date=ordered_date)
         order.games.add(order_item)
-        messages.info(request, f'{game.title} was added to your cart')
+
+        msg = f'{game.title} was added to your cart'
+
+    if request.is_ajax():
+
+        json_data = {
+            'cartItemCount': order_item.quantity,
+            'gameId': game.id,
+            'msg': msg
+        }
+        return JsonResponse(json_data)
+
     return redirect("games_list", platform_name=game.platform)
 
 
@@ -324,6 +341,7 @@ def admin_order_pdf(request, pk):
 
     context = {
         'order': order
+
     }
 
     return Render.render('invoice.html', context)

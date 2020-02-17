@@ -7,10 +7,13 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>{% block head_title %}{% endblock %}</title>
     {% block extra_head %} {% endblock %}
+
     <!-- Font Awesome -->
     <link rel="stylesheet" href="{% static 'fontawesome/css/all.css' %}" />
     <!-- Boostrap -->
     <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}" />
+    <!-- toastr -->
+    <link rel="stylesheet" href="{% static 'css/toastr.css' %}" />
     <!-- Custom -->
     <link rel="stylesheet" href="{% static 'css/custom_styles.css' %}" />
     <!-- Lightbox -->
@@ -22,10 +25,72 @@
     {% block content %}{% endblock %} {% block extra_body %} {% endblock %}
 
     <script src="{% static 'js/jquery-3.4.1.min.js' %}"></script>
+    <script src="{% static 'js/toastr.js' %}"></script>
     <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
     <script src="{% static 'js/lightbox.min.js' %}"></script>
     <script src="{% static 'js/project_main.js' %}"></script>
 
     {% block extra_scripts %} {% endblock extra_scripts %}
+
+    <script>
+      $(document).ready(function() {
+        let gameForm = $('.form-game-ajax');
+        let cartAddForm = $('.form-cart-ajax');
+
+        gameForm.submit(function(event) {
+          event.preventDefault();
+          let thisForm = $(this);
+          let actionEndpoint = thisForm.attr('action');
+          let httpMethod = thisForm.attr('method');
+          let formData = thisForm.serialize();
+
+          $.ajax({
+            url: actionEndpoint,
+            method: httpMethod,
+            data: formData,
+            success: function(data) {
+              let navbarCount = $('.navbar-cart-count');
+              navbarCount.text(data.cartItemCount);
+
+              let gameId = data.gameId;
+
+              $('#modal' + gameId).modal('toggle');
+
+              toastr.success(data.msg);
+            },
+            error: function(errorData) {
+              console.log('error');
+              console.log(errorData);
+            }
+          });
+        });
+
+        cartAddForm.submit(function(event) {
+          event.preventDefault();
+          let thisForm = $(this);
+          let actionEndpoint = thisForm.attr('action');
+          let httpMethod = thisForm.attr('method');
+          let formData = thisForm.serialize();
+
+          $.ajax({
+            url: actionEndpoint,
+            method: httpMethod,
+            data: formData,
+            success: function(data) {
+              let cartCount = $('.cart-count');
+              cartCount.text(data.cartItemCount);
+              let navbarCount = $('.navbar-cart-count');
+              navbarCount.text(data.cartItemCount);
+
+              toastr.success(data.msg);
+            },
+            error: function(errorData) {
+              console.log('error');
+              console.log(errorData);
+            }
+          });
+        });
+      });
+    </script>
   </body>
 </html>

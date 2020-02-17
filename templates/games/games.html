@@ -80,14 +80,20 @@
                 </div>
               </div>
             </div>
-            <div class="modal-footer bg-dark border-top-0 rounded-0">
-              <a
-                href="{{ game.get_add_to_cart_url }}"
+            <form
+              method="POST"
+              action="{{ game.get_add_to_cart_url }}"
+              class="form modal-footer bg-dark border-top-0 rounded-0 form-game-ajax"
+            >
+              {% csrf_token %}
+
+              <button
+                type="submit"
                 class="btn btn-primary btn-lg btn-block shadow-lg"
               >
                 $60 - Add to Cart
-              </a>
-            </div>
+              </button>
+            </form>
           </div>
         </div>
       </div>
