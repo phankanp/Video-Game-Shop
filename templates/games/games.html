@@ -11,18 +11,36 @@
       {% for game in games %}
       <div class="col-12 col-md-6 col-xl-4">
         <div class="card shadow-lg hvr-grow" style="width: 18rem;">
-          <a
-            data-toggle="modal"
-            data-target="#modal{{ game.id }}"
-            class="card-link"
-          >
-            <img src="{{ game.box_art }}" class="card-img-top" alt="..." />
+          <img src="{{ game.box_art }}" class="card-img-top" alt="..." />
 
-            <div class="card-body">
-              <h5 class="card-title">{{ game.title }}</h5>
-              <h6 class="card-title">${{ game.price_per_unit }}</h6>
+          <h5 class="card-title mb-3">{{ game.title }}</h5>
+          <h6 class="card-title">${{ game.price_per_unit }}</h6>
+
+          <hr />
+          <div class="row justify-content-center mb-3">
+            <div class="col-auto">
+              <a
+                data-toggle="modal"
+                data-target="#modal{{ game.id }}"
+                class="card-link"
+                data-placement="top"
+                title="Preview Game"
+                ><i class="far fa-eye"></i
+              ></a>
             </div>
-          </a>
+            <div class="col-auto">
+              <a
+                href="{% url 'single_game' game.id %}"
+                class="text-dark"
+                data-placement="top"
+                title="Game Details"
+                ><i class="fas fa-info"></i
+              ></a>
+            </div>
+            <div class="col-auto">
+              <a href="#!"><i class="far fa-heart"></i></a>
+            </div>
+          </div>
         </div>
       </div>
 

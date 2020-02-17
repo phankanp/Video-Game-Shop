@@ -111,28 +111,105 @@
               class="card shadow-lg hvr-grow mx-auto"
               style="width: 18rem; cursor: default"
             >
-              <a
-                data-toggle="modal"
-                data-target="#modal{{ game.id }}"
-                class="card-link"
-              >
-                <img src="{{ game.box_art }}" class="card-img-top" alt="..." />
+              <img src="{{ game.box_art }}" class="card-img-top" alt="..." />
 
-                <div class="card-body">
-                  <h5 class="card-title">{{ game.title }}</h5>
-                </div>
-              </a>
+              <h5 class="card-title mt-3">{{ game.title }}</h5>
+
               <hr />
               <div class="row justify-content-center mb-3">
                 <div class="col-auto">
-                  <a href="#!"><i class="far fa-eye"></i></a>
+                  <a
+                    data-toggle="modal"
+                    data-target="#modal{{ game.id }}"
+                    class="card-link"
+                    data-placement="top"
+                    title="Preview Game"
+                    ><i class="far fa-eye"></i
+                  ></a>
                 </div>
                 <div class="col-auto">
-                  <a href="#!"><i class="fas fa-info"></i></a>
+                  <a
+                    href="{% url 'single_game' game.id %}"
+                    class="text-dark"
+                    data-placement="top"
+                    title="Game Details"
+                    ><i class="fas fa-info"></i
+                  ></a>
                 </div>
                 <div class="col-auto">
                   <a href="#!"><i class="far fa-heart"></i></a>
                 </div>
+              </div>
+            </div>
+          </div>
+          <!-- Modal -->
+          <div
+            class="modal fade mt-5 rounded-0"
+            id="modal{{ game.id }}"
+            tabindex="-1"
+            role="dialog"
+            aria-labelledby="ModalLongTitle"
+            aria-hidden="true"
+          >
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div
+                  class="modal-body text-center gamesModal border-top-0 border-bottom-0"
+                >
+                  <div class="row text-white ">
+                    <div>
+                      <div class="col">
+                        <img
+                          src="{{ game.box_art }}"
+                          class="shadow-lg "
+                          alt="..."
+                          style="height:375px; width:300px"
+                        />
+                      </div>
+                      <div class="col">
+                        <div class="toast-body">
+                          <h3 class="mt-0">{{ game.title }}</h3>
+                        </div>
+                        <div class="toast-body">
+                          <span
+                            class="mt-0 badge badge-pill badge-success rounded-0 shadow-lg"
+                            >Developer: {{ game.developer }}</span
+                          >
+                          <span
+                            class="mt-0 badge badge-pill badge-success rounded-0 shadow-lg"
+                            >Release Date: {{ game.release_date }}</span
+                          >
+                        </div>
+                        <div class="toast-body">
+                          {{ game.description }}
+                        </div>
+                        <div class="toast-body">
+                          {% for tag in game.genre_tages %}
+                          <span
+                            class="badge badge-pill badge-primary rounded-0 shadow-lg"
+                          >
+                            {{ tag }}
+                          </span>
+                          {% endfor %}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <form
+                  method="POST"
+                  action="{{ game.get_add_to_cart_url }}"
+                  class="form modal-footer bg-dark border-top-0 rounded-0 form-game-ajax"
+                >
+                  {% csrf_token %}
+
+                  <button
+                    type="submit"
+                    class="btn btn-primary btn-lg btn-block shadow-lg"
+                  >
+                    $60 - Add to Cart
+                  </button>
+                </form>
               </div>
             </div>
           </div>
