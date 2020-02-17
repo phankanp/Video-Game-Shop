@@ -6,7 +6,7 @@ from django.contrib import messages
 from django.shortcuts import redirect
 
 
-from games.models import Game
+from games.models import Game, WishList
 from orders.models import Order
 # Create your views here.
 
@@ -14,6 +14,7 @@ from orders.models import Order
 class HomePageView(ListView):
     def get(self, request, *args, **kwargs):
         games = Game.objects.all()
+        wished = WishList.objects.all().filter(user=self.request.user)
         order = None
         try:
             order = Order.objects.get(user=self.request.user, ordered=False)
@@ -32,9 +33,15 @@ class HomePageView(ListView):
         for i in range(games_to_show):
             homepage_games_list.append(games[i])
 
+        wished_games = []
+
+        for i in wished.iterator():
+            wished_games.append(i.wished_game.title)
+
         context = {
             'games': homepage_games_list,
             'order': order,
+            'wished_games': wished_games,
         }
 
         return render(self.request, 'pages/index.html', context)

@@ -31,7 +31,6 @@ stripe.api_key = secrets.STRIPE_TEST_SECRET_KEY
 
 
 class CartSummaryView(LoginRequiredMixin, View):
-    print(stripe.api_key)
 
     def get(self, request, *args, **kwargs):
         try:
@@ -249,7 +248,7 @@ def add_coupon_view(request):
 
 @login_required
 def add_to_cart(request, pk):
-    print(request)
+
     game = get_object_or_404(Game, pk=pk)
 
     msg = ''
@@ -298,7 +297,7 @@ def add_to_cart(request, pk):
 @login_required
 def remove_from_cart(request, pk):
     game = get_object_or_404(Game, pk=pk)
-    print(request)
+
     msg = ''
 
     order_query = Order.objects.filter(user=request.user, ordered=False)

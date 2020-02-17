@@ -37,6 +37,8 @@
         let gameForm = $('.form-game-ajax');
         let cartAddForm = $('.form-cart-ajax');
         let cartRemoveForm = $('.form-remove-ajax');
+        let addToWishlist = $('.form-wishlist-ajax');
+        let removeWishlist = $('.form-removeWishlist-ajax');
 
         gameForm.submit(function(event) {
           event.preventDefault();
@@ -114,6 +116,66 @@
                   window.location.href = 'http://127.0.0.1:8000/';
                 }, 2000);
               }
+            },
+            error: function(errorData) {
+              console.log('error');
+              console.log(errorData);
+            }
+          });
+        });
+
+        addToWishlist.submit(function(event) {
+          event.preventDefault();
+          let thisForm = $(this);
+          let actionEndpoint = thisForm.attr('action');
+          let httpMethod = thisForm.attr('method');
+          let formData = thisForm.serialize();
+
+          $.ajax({
+            url: actionEndpoint,
+            method: httpMethod,
+            data: formData,
+            success: function(data) {
+              let submitSpan = thisForm.find('.submit-span');
+              if (data.added) {
+                submitSpan.html(`<button
+                type="submit"
+                class="btn bg-transparent border-0 "
+                id="wishButton"
+              >
+                <i class="fas fa-heart text-danger"></i>
+              </button>`);
+              } else {
+                submitSpan.html(` <button
+                type="submit"
+                class="btn bg-transparent border-0"
+                id="wishButton"
+              >
+                <i class="far fa-heart"></i>
+              </button>`);
+              }
+              toastr.success(data.msg);
+            },
+            error: function(errorData) {
+              console.log('error');
+              console.log(errorData);
+            }
+          });
+        });
+
+        removeWishlist.submit(function(event) {
+          event.preventDefault();
+          let thisForm = $(this);
+          let actionEndpoint = thisForm.attr('action');
+          let httpMethod = thisForm.attr('method');
+          let formData = thisForm.serialize();
+
+          $.ajax({
+            url: actionEndpoint,
+            method: httpMethod,
+            data: formData,
+            success: function(data) {
+              toastr.success(data.msg);
             },
             error: function(errorData) {
               console.log('error');

@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_POST
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.mixins import LoginRequiredMixin
-from .models import Game
+from .models import Game, WishList
 from django.shortcuts import redirect
 from django.utils import timezone
 from django.contrib import messages
@@ -35,6 +35,13 @@ class HomeView(ListView):
     def get(self, request, *args, **kwargs):
         order = None
 
+        wished = WishList.objects.all().filter(user=self.request.user)
+
+        wished_games = []
+
+        for i in wished.iterator():
+            wished_games.append(i.wished_game.title)
+
         try:
             order = Order.objects.get(user=self.request.user, ordered=False)
         except ObjectDoesNotExist:
@@ -48,7 +55,8 @@ class HomeView(ListView):
             context = {
                 'games': games,
                 'platform': PLATFORM_CHOICES[platform_name],
-                'order': order
+                'order': order,
+                'wished_games': wished_games,
             }
             return render(self.request, 'games/games.html', context)
         except ObjectDoesNotExist:
@@ -58,6 +66,46 @@ class HomeView(ListView):
 
     # model = Game
     # template_name = "games/games.html"
+
+
+class WishListView(ListView):
+    template_name = 'wishlist.html'
+    def get(self, request, *args, **kwargs):
+
+        try:
+            wished = WishList.objects.all().filter(user=self.request.user)
+
+            wished_games = []
+
+            for i in wished.iterator():
+                print(i.wished_game.title)
+                wished_games.append(i.wished_game.title)
+
+            context = {
+                'games': wished,
+                'wished_games': wished_games
+
+            }
+            return render(self.request, 'wishlist.html', context)
+        except ObjectDoesNotExist:
+            return redirect("/")
+
+
+class CartSummaryView(LoginRequiredMixin, View):
+    print(stripe.api_key)
+
+    def get(self, request, *args, **kwargs):
+        try:
+            order = Order.objects.get(user=self.request.user, ordered=False)
+            context = {
+                'order': order,
+
+            }
+            return render(self.request, 'shopping_cart.html', context)
+        except ObjectDoesNotExist:
+            messages.warning(self.request, "Shopping Cart is empty")
+
+            return redirect("/")
 
 
 class GameDetailView(DetailView):
@@ -111,3 +159,82 @@ class SearchResultsListView(ListView):
         return Game.objects.filter(
             Q(title__icontains=query)
         )
+
+
+@login_required
+def add_remove_to_wishlist(request, pk):
+    game = get_object_or_404(Game, pk=pk)
+
+    msg = ''
+    added = None
+
+    check_if_wished = WishList.objects.filter(
+        user=request.user, wished_game=game)
+
+    print(check_if_wished)
+
+    if not check_if_wished:
+        wished_game, created = WishList.objects.get_or_create(
+            wished_game=game, user=request.user)
+        msg = f'{game.title} was added to your wish list'
+        added = True
+    else:
+        WishList.objects.filter(user=request.user, wished_game=game).delete()
+        msg = f'{game.title} was removed from your wish list'
+        added = False
+
+    if request.is_ajax():
+
+        json_data = {
+            'msg': msg,
+            'added': added
+        }
+        return JsonResponse(json_data)
+
+
+# @login_required
+# def add_to_wishlist(request, pk):
+#     game = get_object_or_404(Game, pk=pk)
+
+#     msg = ''
+#     added = None
+
+#     check_if_wished = WishList.objects.filter(
+#         user=request.user, wished_game=game)
+
+#     print(check_if_wished)
+
+#     if not check_if_wished:
+#         wished_game, created = WishList.objects.get_or_create(
+#             wished_game=game, user=request.user)
+#         msg = f'{game.title} was added to your wish list'
+#         added = True
+#     else:
+#         WishList.objects.filter(user=request.user, wished_game=game).delete()
+#         msg = f'{game.title} was removed from your wish list'
+#         added = False
+
+#     if request.is_ajax():
+
+#         json_data = {
+#             'msg': msg,
+#             'added': added
+#         }
+#         return JsonResponse(json_data)
+
+
+# @login_required
+# def remove_from_wishlist(request, pk):
+#     game = get_object_or_404(Game, pk=pk)
+
+#     WishList.objects.filter(user=request.user, wished_game=game).delete()
+
+#     msg = f'{game.title} was removed from your wish list'
+
+#     if request.is_ajax():
+
+#         json_data = {
+#             'msg': msg,
+#             'added': False
+#         }
+#         return JsonResponse(json_data)

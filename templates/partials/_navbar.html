@@ -26,9 +26,15 @@
       <ul class="navbar-nav ml-auto">
         {% if request.user.is_authenticated %}
         <li class="nav-item pt-1">
+          <a class="nav-link active" href="{% url 'heart_list' %}">
+            <i class="fas fa-heart mr-1"></i>
+            My Wishlist
+          </a>
+        </li>
+        <li class="nav-item pt-1">
           <a class="nav-link active" href="{% url 'orders' %}">
             <i class="fas fa-grip-lines-vertical"></i>
-            Orders
+            My Orders
           </a>
         </li>
         <li class="nav-item pt-1">

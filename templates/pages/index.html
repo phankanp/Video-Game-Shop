@@ -121,7 +121,8 @@
                   <a
                     data-toggle="modal"
                     data-target="#modal{{ game.id }}"
-                    class="card-link"
+                    class="btn btn-default"
+                    role="button"
                     data-placement="top"
                     title="Preview Game"
                     ><i class="far fa-eye"></i
@@ -130,14 +131,44 @@
                 <div class="col-auto">
                   <a
                     href="{% url 'single_game' game.id %}"
-                    class="text-dark"
+                    class="btn btn-default"
+                    role="button"
                     data-placement="top"
                     title="Game Details"
                     ><i class="fas fa-info"></i
                   ></a>
                 </div>
-                <div class="col-auto">
-                  <a href="#!"><i class="far fa-heart"></i></a>
+                <div class="col-auto wishlist-toggle">
+                  <form
+                    method="POST"
+                    action="{{ game.get_add_remove_to_wishlist_url }}"
+                    class="form border-top-0 rounded-0 form-wishlist-ajax"
+                  >
+                    {% csrf_token %}
+                    <span class="submit-span">
+                      {% if game.title in wished_games %}
+
+                      <button
+                        type="submit"
+                        class="btn bg-transparent border-0 "
+                        id="wishButton"
+                      >
+                        <i class="fas fa-heart text-danger"></i>
+                      </button>
+
+                      {% else %}
+
+                      <button
+                        type="submit"
+                        class="btn bg-transparent border-0"
+                        id="wishButton"
+                      >
+                        <i class="far fa-heart"></i>
+                      </button>
+
+                      {% endif %}
+                    </span>
+                  </form>
                 </div>
               </div>
             </div>

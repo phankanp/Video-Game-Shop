@@ -48,8 +48,35 @@ class Game(models.Model):
             'pk': self.pk
         })
 
+    def get_add_remove_to_wishlist_url(self):
+        return reverse("add_remove_to_wishlist", kwargs={
+            'pk': self.pk
+        })
+
+    def get_add_to_wishlist_url(self):
+        return reverse("add_to_wishlist", kwargs={
+            'pk': self.pk
+        })
+
+    def get_remove_from_wishlist_url(self):
+        return reverse("remove_from_wishlist", kwargs={
+            'pk': self.pk
+        })
+
     def get_platform_name(self, platform):
         return PLATFORM_CHOICES[platform]
 
     def __str__(self):
         return self.title
+
+
+class WishList(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL,
+                             on_delete=models.CASCADE)
+
+    wished_game = models.ForeignKey(Game, on_delete=models.CASCADE)
+
+    added_date = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.wished_game.title
