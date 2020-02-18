@@ -139,6 +139,16 @@
                   ></a>
                 </div>
                 <div class="col-auto wishlist-toggle">
+                  {% if AnonymousUser.is_authenticated %}
+                  <button
+                    type="submit"
+                    class="btn bg-transparent border-0"
+                    id="wishButton"
+                    disabled
+                  >
+                    <i class="far fa-heart"></i>
+                  </button>
+                  {% else %}
                   <form
                     method="POST"
                     action="{{ game.get_add_remove_to_wishlist_url }}"
@@ -169,6 +179,7 @@
                       {% endif %}
                     </span>
                   </form>
+                  {% endif %}
                 </div>
               </div>
             </div>

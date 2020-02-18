@@ -34,19 +34,26 @@ PLATFORM_CHOICES = {
 
 class HomeView(ListView):
     def get(self, request, *args, **kwargs):
+
         order = None
 
-        wished = WishList.objects.all().filter(user=self.request.user)
+        globalOrderQTY = None
 
         wished_games = []
 
-        for i in wished.iterator():
-            wished_games.append(i.wished_game.title)
+        if request.user.is_authenticated:
+            wished = WishList.objects.all().filter(user=self.request.user)
 
-        try:
-            order = Order.objects.get(user=self.request.user, ordered=False)
-        except ObjectDoesNotExist:
-            pass
+            for i in wished.iterator():
+                wished_games.append(i.wished_game.title)
+
+            try:
+                order = Order.objects.get(
+                    user=self.request.user, ordered=False)
+            except ObjectDoesNotExist:
+                pass
+
+            globalOrderQTY = order.get_total_cart_quantity()
 
         try:
             platform_name = self.kwargs['platform_name']
@@ -57,7 +64,7 @@ class HomeView(ListView):
                 'games': games,
                 'platform': PLATFORM_CHOICES[platform_name],
                 'order': order,
-                'globalOrderQTY': order.get_total_cart_quantity(),
+                'globalOrderQTY': globalOrderQTY,
                 'wished_games': wished_games,
             }
             return render(self.request, 'games/games.html', context)
