@@ -16,8 +16,6 @@ class HomePageView(ListView):
 
         games = Game.objects.all()
 
-        wished = WishList.objects.all().filter(user=self.request.user)
-
         games_to_show = 0
 
         if (len(games) < 9):
@@ -32,8 +30,11 @@ class HomePageView(ListView):
 
         wished_games = []
 
-        for i in wished.iterator():
-            wished_games.append(i.wished_game.title)
+        if request.user.is_authenticated:
+            wished = WishList.objects.all().filter(user=self.request.user)
+
+            for i in wished.iterator():
+                wished_games.append(i.wished_game.title)
 
         context = {
             'games': homepage_games_list,
