@@ -60,7 +60,7 @@
 
               $('#modal' + gameId).modal('toggle');
 
-              if ((data.msg = 'undefined')) {
+              if (data.msg == 'undefined') {
                 toastr.error('Please Login or Register first');
               } else {
                 toastr.success(data.msg);
@@ -159,8 +159,9 @@
                 <i class="far fa-heart"></i>
               </button>`);
               }
+              console.log(data.msg);
 
-              if (data.msg == 'undefined') {
+              if (data.msg === undefined) {
                 toastr.error('Please Login or Register first');
               } else {
                 toastr.success(data.msg);

@@ -223,12 +223,20 @@
         </div>
           <div class="container">
 
-            <button
-            type="button"
-            class="btn btn-primary btn-lg btn-block mb-5"
-            style="margin-top: 10px"
+            <form
+            method="POST"
+            action="{{ game.get_add_to_cart_url }}"
+            class="form border-top-0 rounded-0 form-game-ajax"
           >
-            $60 - Add to Cart
+            {% csrf_token %}
+
+            <button
+              type="submit"
+              class="btn btn-primary btn-lg btn-block shadow-lg"
+            >
+              $60 - Add to Cart
+            </button>
+          </form>
           </button>
 
           </div>
