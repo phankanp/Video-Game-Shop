@@ -102,10 +102,12 @@
                       <h3 class="mt-0">{{ game.title }}</h3>
                     </div>
                     <div class="toast-body">
+                      {% for developer in game.developers %}
                       <span
                         class="mt-0 badge badge-pill badge-success rounded-0 shadow-lg"
-                        >Developer: {{ game.developer }}</span
+                        >Developer: {{ developer }}</span
                       >
+                      {% endfor %}
                       <span
                         class="mt-0 badge badge-pill badge-success rounded-0 shadow-lg"
                         >Release Date: {{ game.release_date }}</span

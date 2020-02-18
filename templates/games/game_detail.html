@@ -91,11 +91,13 @@
             >
               <div class="card-header">Developers</div>
               <div class="card-body">
-                {% for developer in developers %}   
+               
                 <h5 class="card-title">
-                  <span class="badge badge-pill badge-dark">{{ developer.name }}</span>
+                  {% for developer in game.developers %}   
+                  <span class="badge badge-pill badge-dark">{{ developer }}</span>
+                  {% endfor %}
                 </h5>
-                {% endfor %}
+                
               </div>
             </div>
             </div>
