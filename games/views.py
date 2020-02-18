@@ -70,8 +70,10 @@ class HomeView(ListView):
     # template_name = "games/games.html"
 
 
-class WishListView(ListView):
+class WishListView(LoginRequiredMixin, ListView):
+
     template_name = 'wishlist.html'
+
     def get(self, request, *args, **kwargs):
 
         try:
