@@ -1,3 +1,4 @@
+from django import template
 from django.shortcuts import render, get_object_or_404
 from django.views.generic import ListView, DetailView, View
 from django.contrib.auth.decorators import login_required
@@ -56,6 +57,7 @@ class HomeView(ListView):
                 'games': games,
                 'platform': PLATFORM_CHOICES[platform_name],
                 'order': order,
+                'globalOrderQTY': order.get_total_cart_quantity(),
                 'wished_games': wished_games,
             }
             return render(self.request, 'games/games.html', context)
@@ -75,6 +77,8 @@ class WishListView(ListView):
         try:
             wished = WishList.objects.all().filter(user=self.request.user)
 
+            order = Order.objects.get(user=self.request.user, ordered=False)
+
             wished_games = []
 
             for i in wished.iterator():
@@ -83,7 +87,8 @@ class WishListView(ListView):
 
             context = {
                 'games': wished,
-                'wished_games': wished_games
+                'wished_games': wished_games,
+                'order': order,
 
             }
             return render(self.request, 'wishlist.html', context)

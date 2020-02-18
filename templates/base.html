@@ -37,7 +37,7 @@
         let gameForm = $('.form-game-ajax');
         let cartAddForm = $('.form-cart-ajax');
         let cartRemoveForm = $('.form-remove-ajax');
-        let addToWishlist = $('.form-wishlist-ajax');
+        let addRemoveToWishlist = $('.form-wishlist-ajax');
         let removeWishlist = $('.form-removeWishlist-ajax');
 
         gameForm.submit(function(event) {
@@ -52,7 +52,8 @@
             method: httpMethod,
             data: formData,
             success: function(data) {
-              let navbarCount = $('.navbar-cart-count');
+              console.log(data);
+              let navbarCount = $('.shopping-bag-text');
               navbarCount.text(data.cartItemCount);
 
               let gameId = data.gameId;
@@ -80,9 +81,9 @@
             method: httpMethod,
             data: formData,
             success: function(data) {
-              let cartCount = $('.cart-count');
+              let cartCount = $('.cart-count' + data.orderItemId);
               cartCount.text(data.cartItemCount);
-              let navbarCount = $('.navbar-cart-count');
+              let navbarCount = $('.shopping-bag-text');
               navbarCount.text(data.cartItemCount);
 
               toastr.success(data.msg);
@@ -106,15 +107,15 @@
             method: httpMethod,
             data: formData,
             success: function(data) {
-              let cartCount = $('.cart-count');
+              let cartCount = $('.cart-count' + data.orderItemId);
               cartCount.text(data.cartItemCount);
-              let navbarCount = $('.navbar-cart-count');
+              let navbarCount = $('.shopping-bag-text');
               navbarCount.text(data.cartItemCount);
               toastr.success(data.msg);
               if (data.cartItemCount < 1) {
                 setTimeout(function() {
                   window.location.href = 'http://127.0.0.1:8000/';
-                }, 2000);
+                }, 1000);
               }
             },
             error: function(errorData) {
@@ -124,7 +125,7 @@
           });
         });
 
-        addToWishlist.submit(function(event) {
+        addRemoveToWishlist.submit(function(event) {
           event.preventDefault();
           let thisForm = $(this);
           let actionEndpoint = thisForm.attr('action');

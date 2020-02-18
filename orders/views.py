@@ -12,6 +12,7 @@ from django.conf import settings
 from django.http import HttpResponse
 from django.http import JsonResponse
 from django.template.loader import render_to_string
+from django import template
 
 from orders.models import OrderItem, Order, Coupon, Payment
 from games.models import Game
@@ -49,9 +50,11 @@ class CartSummaryView(LoginRequiredMixin, View):
 class OrdersView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         try:
-            order = Order.objects.all().filter(user=self.request.user).filter(ordered=True)
+            orders = Order.objects.all().filter(user=self.request.user).filter(ordered=True)
+
             context = {
-                'orders': order
+                'orders': orders,
+
             }
             return render(self.request, 'orders.html', context)
         except ObjectDoesNotExist:
@@ -252,6 +255,7 @@ def add_to_cart(request, pk):
     game = get_object_or_404(Game, pk=pk)
 
     msg = ''
+    order_qty = 0
 
     order_item, created = OrderItem.objects.get_or_create(
         game=game, user=request.user, ordered=False)
@@ -267,27 +271,32 @@ def add_to_cart(request, pk):
 
             order_item.save()
 
+            order_qty += order.get_total_cart_quantity()
+
             msg = f'{game.title} was added to your cart'
 
             # return redirect("shopping-cart")
         else:
-            msg = f'{game.title} was added to your cart'
-
             order.games.add(order_item)
+
+            order_qty += order.get_total_cart_quantity()
+
+            msg = f'{game.title} was added to your cart'
     else:
         ordered_date = timezone.now()
         order = Order.objects.create(
             user=request.user, ordered_date=ordered_date)
         order.games.add(order_item)
-
+        order_qty += order.get_total_cart_quantity()
         msg = f'{game.title} was added to your cart'
 
     if request.is_ajax():
 
         json_data = {
-            'cartItemCount': order_item.quantity,
+            'cartItemCount': order_qty,
             'gameId': game.id,
-            'msg': msg
+            'msg': msg,
+            'orderItemId': order_item.id
         }
         return JsonResponse(json_data)
 
@@ -299,6 +308,8 @@ def remove_from_cart(request, pk):
     game = get_object_or_404(Game, pk=pk)
 
     msg = ''
+    order_qty = 0
+    order_item = None
 
     order_query = Order.objects.filter(user=request.user, ordered=False)
 
@@ -315,6 +326,7 @@ def remove_from_cart(request, pk):
                 order_item.quantity -= 1
 
                 order_item.save()
+                order_qty = order.get_total_cart_quantity()
                 msg = f'{game.title} was removed from your cart'
 
             elif order_item.quantity == 1:
@@ -322,11 +334,12 @@ def remove_from_cart(request, pk):
                 order_item.delete()
                 msg = f'{game.title} was removed from your cart'
                 if request.is_ajax():
-
+                    order_qty = order.get_total_cart_quantity()
                     json_data = {
-                        'cartItemCount': order_item.quantity,
+                        'cartItemCount': order_qty,
                         'gameId': game.id,
-                        'msg': msg
+                        'msg': msg,
+                        'orderItemId': order_item.id
                     }
                     return JsonResponse(json_data)
 
@@ -344,9 +357,10 @@ def remove_from_cart(request, pk):
     if request.is_ajax():
 
         json_data = {
-            'cartItemCount': order_item.quantity,
+            'cartItemCount': order_qty,
             'gameId': game.id,
-            'msg': msg
+            'msg': msg,
+            'orderItemId': order_item.id
         }
         return JsonResponse(json_data)
 

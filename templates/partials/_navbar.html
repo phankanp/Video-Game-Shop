@@ -88,7 +88,9 @@
           <a class="nav-link" href="{% url 'shopping-cart' %}">
             <span class="fa-stack fa-1x">
               <i class="fa fa-shopping-bag fa-stack-2x"></i>
-              <span class="fa-stack-1x shopping-bag-text">0</span>
+              <span class="fa-stack-1x shopping-bag-text"
+                >{{request.user|cart_item_count}}</span
+              >
             </span>
           </a>
         </li>

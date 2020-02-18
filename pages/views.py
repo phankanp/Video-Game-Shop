@@ -4,22 +4,19 @@ from django.views.generic import TemplateView, ListView
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib import messages
 from django.shortcuts import redirect
-
+from django import template
 
 from games.models import Game, WishList
-from orders.models import Order
+from orders.models import Order, OrderItem
 # Create your views here.
 
 
 class HomePageView(ListView):
     def get(self, request, *args, **kwargs):
+
         games = Game.objects.all()
+
         wished = WishList.objects.all().filter(user=self.request.user)
-        order = None
-        try:
-            order = Order.objects.get(user=self.request.user, ordered=False)
-        except ObjectDoesNotExist:
-            pass
 
         games_to_show = 0
 
@@ -40,8 +37,8 @@ class HomePageView(ListView):
 
         context = {
             'games': homepage_games_list,
-            'order': order,
             'wished_games': wished_games,
+
         }
 
         return render(self.request, 'pages/index.html', context)
