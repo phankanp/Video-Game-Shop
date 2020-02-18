@@ -152,8 +152,6 @@ def checkout_view(request):
                 same_billing_address = form.cleaned_data.get(
                     'same_billing_address')
 
-                print(shipping_state + '*****************************')
-
                 if '' not in (shipping_main_address, shipping_country, shipping_zip, shipping_city):
                     shipping_address = Address(
                         user=request.user,
@@ -255,6 +253,7 @@ def add_to_cart(request, pk):
     game = get_object_or_404(Game, pk=pk)
 
     msg = ''
+
     order_qty = 0
 
     order_item, created = OrderItem.objects.get_or_create(
@@ -308,7 +307,9 @@ def remove_from_cart(request, pk):
     game = get_object_or_404(Game, pk=pk)
 
     msg = ''
+
     order_qty = 0
+
     order_item = None
 
     order_query = Order.objects.filter(user=request.user, ordered=False)

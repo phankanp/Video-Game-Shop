@@ -82,7 +82,6 @@ class WishListView(ListView):
             wished_games = []
 
             for i in wished.iterator():
-                print(i.wished_game.title)
                 wished_games.append(i.wished_game.title)
 
             context = {
@@ -97,7 +96,6 @@ class WishListView(ListView):
 
 
 class CartSummaryView(LoginRequiredMixin, View):
-    print(stripe.api_key)
 
     def get(self, request, *args, **kwargs):
         try:
@@ -175,8 +173,6 @@ def add_remove_to_wishlist(request, pk):
 
     check_if_wished = WishList.objects.filter(
         user=request.user, wished_game=game)
-
-    print(check_if_wished)
 
     if not check_if_wished:
         wished_game, created = WishList.objects.get_or_create(
