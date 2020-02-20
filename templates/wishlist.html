@@ -8,7 +8,7 @@
 <div class="container">
   <div class="center">
     <div class="row justify-content-center">
-      {% for game in games %}
+      {% if games %} {% for game in games %}
 
       <div class="col-12 col-md-6 col-xl-4">
         <div class="card shadow-lg hvr-grow" style="width: 18rem;">
@@ -19,6 +19,9 @@
           />
 
           <h5 class="card-title mb-3">{{ game.wished_game.title }}</h5>
+          <h5 class="card-title mt-3">
+            {{ game.wished_game.get_platform_display }}
+          </h5>
           <h6 class="card-title">${{ game.wished_game.price_per_unit }}</h6>
 
           <hr />
@@ -152,7 +155,9 @@
           </div>
         </div>
       </div>
-      {% endfor %}
+      {% endfor %} {% else %}
+      <h2 class="mt-5 text-white text-center">No Games In Wishlist!</h2>
+      {% endif %}
     </div>
   </div>
 </div>

@@ -114,6 +114,7 @@
               <img src="{{ game.box_art }}" class="card-img-top" alt="..." />
 
               <h5 class="card-title mt-3">{{ game.title }}</h5>
+              <h5 class="card-title mt-3">{{ game.get_platform_display }}</h5>
 
               <hr />
               <div class="row justify-content-center mb-3">
@@ -122,9 +123,9 @@
                     data-toggle="modal"
                     data-target="#modal{{ game.id }}"
                     class="btn btn-default"
-                    role="button"
                     data-placement="top"
                     title="Preview Game"
+                    style="cursor: pointer"
                     ><i class="far fa-eye"></i
                   ></a>
                 </div>
