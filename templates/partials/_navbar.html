@@ -26,7 +26,7 @@
       <ul class="navbar-nav ml-auto">
         {% if request.user.is_authenticated %}
         <li class="nav-item pt-1">
-          <a class="nav-link active" href="{% url 'heart_list' %}">
+          <a class="nav-link active" href="{% url 'wish_list' %}">
             <i class="fas fa-heart mr-1"></i>
             My Wishlist
           </a>
@@ -67,7 +67,7 @@
         </form>
         {% else %}
         <li class="nav-item pt-1">
-          <a class="nav-link active" href="{% url 'heart_list' %}">
+          <a class="nav-link active" href="{% url 'wish_list' %}">
             <i class="fas fa-heart mr-1"></i>
             My Wishlist
           </a>

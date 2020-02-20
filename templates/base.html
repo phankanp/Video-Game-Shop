@@ -60,7 +60,7 @@
 
               $('#modal' + gameId).modal('toggle');
 
-              if (data.msg == 'undefined') {
+              if (data.msg === undefined) {
                 toastr.error('Please Login or Register first');
               } else {
                 toastr.success(data.msg);
@@ -89,8 +89,12 @@
               cartCount.text(data.cartItemCount);
               let navbarCount = $('.shopping-bag-text');
               navbarCount.text(data.cartItemCount);
-
-              toastr.success(data.msg);
+              console.log('test');
+              if (data.msg === undefined) {
+                toastr.error('Please Login or Register first');
+              } else {
+                toastr.success(data.msg);
+              }
             },
             error: function(errorData) {
               console.log('error');

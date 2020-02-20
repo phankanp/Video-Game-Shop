@@ -37,7 +37,7 @@ class HomeView(ListView):
 
         order = None
 
-        globalOrderQTY = None
+        globalOrderQTY = 0
 
         wished_games = []
 
@@ -50,10 +50,9 @@ class HomeView(ListView):
             try:
                 order = Order.objects.get(
                     user=self.request.user, ordered=False)
+                globalOrderQTY = order.get_total_cart_quantity()
             except ObjectDoesNotExist:
                 pass
-
-            globalOrderQTY = order.get_total_cart_quantity()
 
         try:
             platform_name = self.kwargs['platform_name']
@@ -83,10 +82,19 @@ class WishListView(LoginRequiredMixin, ListView):
 
     def get(self, request, *args, **kwargs):
 
+        order = None
+
+        try:
+            order = Order.objects.get(
+                user=self.request.user, ordered=False)
+
+        except ObjectDoesNotExist:
+            pass
+
         try:
             wished = WishList.objects.all().filter(user=self.request.user)
 
-            order = Order.objects.get(user=self.request.user, ordered=False)
+            # order = Order.objects.get(user=self.request.user, ordered=False)
 
             wished_games = []
 
