@@ -15,7 +15,6 @@ from django.http import JsonResponse
 from django.db.models import Q
 from .render import Render
 
-
 from orders.models import Order
 
 import rawgpy
@@ -23,6 +22,7 @@ import requests
 import json
 import math
 import stripe
+
 
 PLATFORM_CHOICES = {
     'X': 'Xbox',
@@ -32,7 +32,8 @@ PLATFORM_CHOICES = {
 }
 
 
-class HomeView(ListView):
+class PlatformView(ListView):
+
     def get(self, request, *args, **kwargs):
 
         order = None
@@ -66,14 +67,12 @@ class HomeView(ListView):
                 'globalOrderQTY': globalOrderQTY,
                 'wished_games': wished_games,
             }
+
             return render(self.request, 'games/games.html', context)
         except ObjectDoesNotExist:
             messages.warning(self.request, "Unable to load platform page")
 
             return redirect("/")
-
-    # model = Game
-    # template_name = "games/games.html"
 
 
 class WishListView(LoginRequiredMixin, ListView):
@@ -94,8 +93,6 @@ class WishListView(LoginRequiredMixin, ListView):
         try:
             wished = WishList.objects.all().filter(user=self.request.user)
 
-            # order = Order.objects.get(user=self.request.user, ordered=False)
-
             wished_games = []
 
             for i in wished.iterator():
@@ -105,8 +102,8 @@ class WishListView(LoginRequiredMixin, ListView):
                 'games': wished,
                 'wished_games': wished_games,
                 'order': order,
-
             }
+
             return render(self.request, 'wishlist.html', context)
         except ObjectDoesNotExist:
             return redirect("/")
@@ -115,12 +112,13 @@ class WishListView(LoginRequiredMixin, ListView):
 class CartSummaryView(LoginRequiredMixin, View):
 
     def get(self, request, *args, **kwargs):
+
         try:
             order = Order.objects.get(user=self.request.user, ordered=False)
             context = {
                 'order': order,
-
             }
+
             return render(self.request, 'shopping_cart.html', context)
         except ObjectDoesNotExist:
             messages.warning(self.request, "Shopping Cart is empty")
@@ -170,12 +168,17 @@ class GameDetailView(DetailView):
 
 
 class SearchResultsListView(ListView):
+
     model = Game
+
     context_object_name = 'game_list'
+
     template_name = 'search_results.html'
 
     def get_queryset(self):  # new
+
         query = self.request.GET.get('q')
+
         return Game.objects.filter(
             Q(title__icontains=query)
         )
@@ -183,9 +186,11 @@ class SearchResultsListView(ListView):
 
 @login_required
 def add_remove_to_wishlist(request, pk):
+
     game = get_object_or_404(Game, pk=pk)
 
     msg = ''
+
     added = None
 
     check_if_wished = WishList.objects.filter(
@@ -207,52 +212,5 @@ def add_remove_to_wishlist(request, pk):
             'msg': msg,
             'added': added
         }
+
         return JsonResponse(json_data)
-
-
-# @login_required
-# def add_to_wishlist(request, pk):
-#     game = get_object_or_404(Game, pk=pk)
-
-#     msg = ''
-#     added = None
-
-#     check_if_wished = WishList.objects.filter(
-#         user=request.user, wished_game=game)
-
-#     print(check_if_wished)
-
-#     if not check_if_wished:
-#         wished_game, created = WishList.objects.get_or_create(
-#             wished_game=game, user=request.user)
-#         msg = f'{game.title} was added to your wish list'
-#         added = True
-#     else:
-#         WishList.objects.filter(user=request.user, wished_game=game).delete()
-#         msg = f'{game.title} was removed from your wish list'
-#         added = False
-
-#     if request.is_ajax():
-
-#         json_data = {
-#             'msg': msg,
-#             'added': added
-#         }
-#         return JsonResponse(json_data)
-
-
-# @login_required
-# def remove_from_wishlist(request, pk):
-#     game = get_object_or_404(Game, pk=pk)
-
-#     WishList.objects.filter(user=request.user, wished_game=game).delete()
-
-#     msg = f'{game.title} was removed from your wish list'
-
-#     if request.is_ajax():
-
-#         json_data = {
-#             'msg': msg,
-#             'added': False
-#         }
-#         return JsonResponse(json_data)

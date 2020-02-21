@@ -36,10 +36,11 @@ class CartSummaryView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         try:
             order = Order.objects.get(user=self.request.user, ordered=False)
+
             context = {
                 'order': order,
-
             }
+
             return render(self.request, 'shopping_cart.html', context)
         except ObjectDoesNotExist:
             messages.warning(self.request, "Shopping Cart is empty")
@@ -54,8 +55,8 @@ class OrdersView(LoginRequiredMixin, View):
 
             context = {
                 'orders': orders,
-
             }
+
             return render(self.request, 'orders.html', context)
         except ObjectDoesNotExist:
             messages.warning(self.request, "Shopping Cart is empty")
@@ -79,21 +80,30 @@ def payment_view(request):
             )
 
             payment = Payment()
+
             payment.stripe_charge_id = charge.id
+
             payment.user = request.user
+
             payment.amount = charge.amount / 100
+
             payment.save()
 
             order_items = order.games.all()
+
             order_items.update(ordered=True)
+
             for game in order_items:
                 game.save()
 
             order.ordered = True
+
             order.payment = payment
+
             order.save()
 
             messages.success(request, "Order was successful")
+
             return redirect("/")
 
         except stripe.error.CardError as e:
@@ -174,11 +184,16 @@ def checkout_view(request):
                 if (same_billing_address != True):
                     billing_main_address = form.cleaned_data.get(
                         'billing_address')
+
                     billing_optional_address = form.cleaned_data.get(
                         'billing_optional_address')
+
                     billing_country = form.cleaned_data.get('billing_country')
+
                     billing_zip = form.cleaned_data.get('billing_zip')
+
                     billing_city = form.cleaned_data.get('billing_city')
+
                     billing_state = form.cleaned_data.get('billing_state')
 
                     if '' not in (billing_main_address, billing_country, billing_zip, billing_city):
@@ -194,22 +209,24 @@ def checkout_view(request):
                     billing_address.save()
 
                     order.billing_address = billing_address
+
                     order.save()
                 else:
                     billing_address = order.shipping_address
+
                     billing_address.save()
 
                     order.billing_address = billing_address
+
                     order.save()
 
                 return JsonResponse({"success": True}, status=200)
-            #     return redirect('checkout')
 
             messages.warning(
                 request, "Please fill in the required shipping address fields")
 
             return JsonResponse({"success": False}, status=400)
-            # return redirect("checkout")
+
         except ObjectDoesNotExist:
             messages.warning(request, "Shopping Cart is empty")
 
@@ -274,7 +291,6 @@ def add_to_cart(request, pk):
 
             msg = f'{game.title} was added to your cart'
 
-            # return redirect("shopping-cart")
         else:
             order.games.add(order_item)
 
@@ -283,10 +299,14 @@ def add_to_cart(request, pk):
             msg = f'{game.title} was added to your cart'
     else:
         ordered_date = timezone.now()
+
         order = Order.objects.create(
             user=request.user, ordered_date=ordered_date)
+
         order.games.add(order_item)
+
         order_qty += order.get_total_cart_quantity()
+
         msg = f'{game.title} was added to your cart'
 
     if request.is_ajax():
@@ -322,37 +342,47 @@ def remove_from_cart(request, pk):
                 game=game, user=request.user, ordered=False)[0]
 
             if order_item.quantity > 1:
-                # order.games.remove(order_item)
 
                 order_item.quantity -= 1
 
                 order_item.save()
+
                 order_qty = order.get_total_cart_quantity()
+
                 msg = f'{game.title} was removed from your cart'
 
             elif order_item.quantity == 1:
+
                 order_item.quantity -= 1
+
                 order_item.delete()
+
                 msg = f'{game.title} was removed from your cart'
+
                 if request.is_ajax():
                     order_qty = order.get_total_cart_quantity()
+
                     json_data = {
                         'cartItemCount': order_qty,
                         'gameId': game.id,
                         'msg': msg,
                         'orderItemId': order_item.id
                     }
+
                     return JsonResponse(json_data)
 
             if not order.games.exists():
                 order.delete()
+
                 return redirect("shopping-cart")
 
         else:
             messages.info(request, f'{game.title} is not in your cart')
+
             return redirect("single_game", pk=pk)
     else:
         messages.info(request, 'No active orders')
+
         return redirect("single_game", pk=pk)
 
     if request.is_ajax():

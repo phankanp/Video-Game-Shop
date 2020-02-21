@@ -39,7 +39,6 @@ class HomePageView(ListView):
         context = {
             'games': homepage_games_list,
             'wished_games': wished_games,
-
         }
 
         return render(self.request, 'pages/index.html', context)
