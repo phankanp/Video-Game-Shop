@@ -87,9 +87,10 @@
             success: function(data) {
               let cartCount = $('.cart-count' + data.orderItemId);
               cartCount.text(data.cartItemCount);
+
               let navbarCount = $('.shopping-bag-text');
               navbarCount.text(data.cartItemCount);
-              console.log('test');
+
               if (data.msg === undefined) {
                 toastr.error('Please Login or Register first');
               } else {
@@ -117,9 +118,12 @@
             success: function(data) {
               let cartCount = $('.cart-count' + data.orderItemId);
               cartCount.text(data.cartItemCount);
+
               let navbarCount = $('.shopping-bag-text');
               navbarCount.text(data.cartItemCount);
+
               toastr.success(data.msg);
+
               if (data.cartItemCount < 1) {
                 setTimeout(function() {
                   window.location.href = 'http://127.0.0.1:8000/';
@@ -146,6 +150,7 @@
             data: formData,
             success: function(data) {
               let submitSpan = thisForm.find('.submit-span');
+
               if (data.added) {
                 submitSpan.html(`<button
                 type="submit"
@@ -163,34 +168,12 @@
                 <i class="far fa-heart"></i>
               </button>`);
               }
-              console.log(data.msg);
 
               if (data.msg === undefined) {
                 toastr.error('Please Login or Register first');
               } else {
                 toastr.success(data.msg);
               }
-            },
-            error: function(errorData) {
-              console.log('error');
-              console.log(errorData);
-            }
-          });
-        });
-
-        removeWishlist.submit(function(event) {
-          event.preventDefault();
-          let thisForm = $(this);
-          let actionEndpoint = thisForm.attr('action');
-          let httpMethod = thisForm.attr('method');
-          let formData = thisForm.serialize();
-
-          $.ajax({
-            url: actionEndpoint,
-            method: httpMethod,
-            data: formData,
-            success: function(data) {
-              toastr.success(data.msg);
             },
             error: function(errorData) {
               console.log('error');
