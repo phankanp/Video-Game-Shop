@@ -1,4 +1,4 @@
-# Video-Game-Shop - [Live App!](https://bit.ly/Heroku-Video-Games)
+# Video-Game-Shop - [Live App!](https://ecomgs.herokuapp.com/)
 
 A ecommerce shop for selling and buying video games. 
 
