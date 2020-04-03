@@ -4,8 +4,8 @@ from orders import views
 
 
 urlpatterns = [
-    path('invoice/<int:pk>/', views.admin_order_pdf, name='invoice'),
-    path('orders', views.OrdersView.as_view(), name='orders'),
+    path('invoice/<int:pk>/', views.AdminOrderPdf.as_view(), name='invoice'),
+    path('', views.OrdersView.as_view(), name='orders'),
     path('checkout/payment', views.payment_view, name='payment'),
     path('checkout-coupon/apply', views.add_coupon_view, name='checkout-coupon'),
     path('checkout', views.checkout_view, name='checkout'),

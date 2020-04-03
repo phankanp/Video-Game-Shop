@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.shortcuts import render, get_object_or_404
-from django.views.generic import ListView, DetailView, View
+from django.views.generic import ListView, DetailView, TemplateView, View
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_POST
 from django.core.exceptions import ObjectDoesNotExist
@@ -62,6 +62,17 @@ class OrdersView(LoginRequiredMixin, View):
             messages.warning(self.request, "Shopping Cart is empty")
 
             return redirect("/")
+
+
+class AdminOrderPdf(View):
+    def get(self, request, *args, **kwargs):
+        order = get_object_or_404(Order,  pk=kwargs['pk'])
+
+        context = {
+            'order': order
+        }
+
+        return Render.render('invoice.html', context)
 
 
 def payment_view(request):
@@ -394,14 +405,3 @@ def remove_from_cart(request, pk):
             'orderItemId': order_item.id
         }
         return JsonResponse(json_data)
-
-
-def admin_order_pdf(request, pk):
-    order = get_object_or_404(Order, pk=pk)
-
-    context = {
-        'order': order
-
-    }
-
-    return Render.render('invoice.html', context)
