@@ -89,10 +89,11 @@ WSGI_APPLICATION = 'video_game_store_app.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'vgsdb',
+        'NAME': 'postgres',
         'USER': 'postgres',
-        'PASSWORD': "password",
-        'HOST': 'localhost'
+        'PASSWORD': 'postgres',
+        'HOST': 'db',
+        'PORT': 5432
     }
 }
 

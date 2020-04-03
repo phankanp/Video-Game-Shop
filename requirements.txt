@@ -11,14 +11,16 @@ dj-database-url==0.5.0
 Django==3.0.3
 django-allauth==0.40.0
 django-countries==5.5
-django-crispy-forms==1.7.2
+django-crispy-forms==1.9.0
 django-heroku==0.3.1
+django-secrets==1.0.2
 django-weasyprint==0.5.4
+future==0.18.2
 gunicorn==20.0.0
 html5lib==1.0.1
 idna==2.8
 oauthlib==3.1.0
-Pillow==6.2.0
+Pillow==7.1.1
 psycopg2==2.8.3
 psycopg2-binary==2.8.3
 pycodestyle==2.5.0
@@ -27,6 +29,7 @@ PyPDF2==1.26.0
 Pyphen==0.9.5
 python3-openid==3.1.0
 pytz==2019.2
+rawgpy==1.0.3
 reportlab==3.5.28
 requests==2.22.0
 requests-oauthlib==1.2.0
