@@ -28,8 +28,6 @@ import json
 
 stripe.api_key = secrets.STRIPE_TEST_SECRET_KEY
 
-# Create your views here.
-
 
 class CartSummaryView(LoginRequiredMixin, View):
 
@@ -275,12 +273,45 @@ def add_coupon_view(request):
             return redirect("checkout")
 
 
+@require_POST
+def add_coupon_view_from_cart(request):
+
+    form = CouponForm(request.POST)
+
+    msg = None
+    coupon = None
+    order = None
+
+    if form.is_valid():
+        code = form.cleaned_data.get('code')
+
+        try:
+            coupon = Coupon.objects.get(code__iexact=code)
+
+            order = Order.objects.get(user=request.user, ordered=False)
+
+            order.coupon = coupon
+
+            order.save()
+
+            msg = 'Coupon was successfully added'
+        except ObjectDoesNotExist:
+            messages.info(request, "No active order")
+
+    json_data = {
+        'msg': msg,
+        'couponPrice': coupon.amount,
+        'totalCartPrice': order.get_total_cart_price()
+    }
+    return JsonResponse(json_data)
+
+
 @login_required
 def add_to_cart(request, pk):
 
     game = get_object_or_404(Game, pk=pk)
 
-    msg = ''
+    order = None
 
     order_qty = 0
 
@@ -299,15 +330,10 @@ def add_to_cart(request, pk):
             order_item.save()
 
             order_qty += order.get_total_cart_quantity()
-
-            msg = f'{game.title} was added to your cart'
-
         else:
             order.games.add(order_item)
 
             order_qty += order.get_total_cart_quantity()
-
-            msg = f'{game.title} was added to your cart'
     else:
         ordered_date = timezone.now()
 
@@ -318,30 +344,31 @@ def add_to_cart(request, pk):
 
         order_qty += order.get_total_cart_quantity()
 
-        msg = f'{game.title} was added to your cart'
-
-    if request.is_ajax():
-
-        json_data = {
-            'cartItemCount': order_qty,
-            'gameId': game.id,
-            'msg': msg,
-            'orderItemId': order_item.id
-        }
-        return JsonResponse(json_data)
-
-    return redirect("games_list", platform_name=game.platform)
+    json_data = {
+        'cartItemCount': order.get_total_cart_quantity(),
+        'gameId': game.id,
+        'msg': f'{game.title} was added to your cart',
+        'orderItemId': order_item.id,
+        'totalGamePrice': order_item.quantity * order_item.game.price_per_unit,
+        'totalCartPriceNoCoupon': order.get_total_cart_price_no_coupon(),
+        'totalCartPrice': order.get_total_cart_price()
+    }
+    return JsonResponse(json_data)
 
 
 @login_required
 def remove_from_cart(request, pk):
     game = get_object_or_404(Game, pk=pk)
 
-    msg = ''
-
-    order_qty = 0
-
     order_item = None
+
+    order = None
+
+    order_qty, orderItemId, cartItemCount, totalGamePrice = 0
+
+    quantZero = False
+
+    totalZero = False
 
     order_query = Order.objects.filter(user=request.user, ordered=False)
 
@@ -358,50 +385,49 @@ def remove_from_cart(request, pk):
 
                 order_item.save()
 
-                order_qty = order.get_total_cart_quantity()
+                cartItemCount = order_item.quantity
 
-                msg = f'{game.title} was removed from your cart'
+                totalGamePrice = order_item.quantity * order_item.game.price_per_unit
 
+                orderItemId = order_item.id
             elif order_item.quantity == 1:
 
-                order_item.quantity -= 1
+                orderItemId = order_item.id
 
                 order_item.delete()
 
-                msg = f'{game.title} was removed from your cart'
-
-                if request.is_ajax():
-                    order_qty = order.get_total_cart_quantity()
-
-                    json_data = {
-                        'cartItemCount': order_qty,
-                        'gameId': game.id,
-                        'msg': msg,
-                        'orderItemId': order_item.id
-                    }
-
-                    return JsonResponse(json_data)
+                quantZero = True
 
             if not order.games.exists():
-                order.delete()
 
-                return redirect("shopping-cart")
+                totalZero = True
 
-        else:
-            messages.info(request, f'{game.title} is not in your cart')
+    json_data = {
+        'cartItemCount': cartItemCount,
+        'gameId': game.id,
+        'msg': f'{game.title} was removed from your cart',
+        'orderItemId': orderItemId,
+        'totalGamePrice': totalGamePrice,
+        'totalCartPriceNoCoupon': order.get_total_cart_price_no_coupon(),
+        'totalCartPrice': order.get_total_cart_price(),
+        'quantZero': quantZero,
+        'totalZero': totalZero
+    }
+    return JsonResponse(json_data)
 
-            return redirect("single_game", pk=pk)
-    else:
-        messages.info(request, 'No active orders')
 
-        return redirect("single_game", pk=pk)
+def remove_item_from_cart(request, pk):
+    order_query = Order.objects.filter(user=request.user, ordered=False)
 
-    if request.is_ajax():
+    order = order_query[0]
+    order_item = OrderItem.objects.filter(
+        pk=pk, user=request.user, ordered=False)[0]
 
-        json_data = {
-            'cartItemCount': order_qty,
-            'gameId': game.id,
-            'msg': msg,
-            'orderItemId': order_item.id
-        }
-        return JsonResponse(json_data)
+    order_item.delete()
+
+    json_data = {
+        'orderItemId': pk,
+        'totalCartPriceNoCoupon': order.get_total_cart_price_no_coupon(),
+        'totalCartPrice': order.get_total_cart_price(),
+    }
+    return JsonResponse(json_data)

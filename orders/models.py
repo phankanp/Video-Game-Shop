@@ -7,8 +7,6 @@ from django_countries.fields import CountryField
 
 from games.models import Game
 
-# Create your models here.
-
 
 class OrderItem(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL,
@@ -25,6 +23,11 @@ class OrderItem(models.Model):
 
     def get_total_cart_item_price(self):
         return self.game.price_per_unit * self.quantity
+
+    def get_remove_item_from_cart_url(self):
+        return reverse("remove_item_from_cart", kwargs={
+            'pk': self.pk
+        })
 
 
 class Order(models.Model):
@@ -78,6 +81,20 @@ class Order(models.Model):
             x -= self.coupon.amount
 
         return x
+
+    def get_total_cart_price_no_coupon(self):
+        x = 0
+
+        for order_item in self.games.all():
+            x += order_item.game.price_per_unit * order_item.quantity
+
+        return x
+
+    def get_coupon_value(self):
+        if self.coupon:
+            return self.coupon.amount
+
+        return '0.00'
 
     def get_total_cart_quantity(self):
         x = 0

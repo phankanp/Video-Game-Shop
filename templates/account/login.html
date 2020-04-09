@@ -8,12 +8,20 @@
 {% endblock %} 
 {% block content %}
 
+<!-- ========================= SECTION PAGETOP ========================= -->
+<section class="section-pagetop bg">
+  <div class="container text-center">
+    <h1 class="title-page">Sign In</h1>
+  </div>
+  <!-- container //  -->
+</section>
+<!-- ========================= SECTION INTRO END// ========================= -->
+
 
 <div class="container mt-5">
   <div class="row justify-content-center align-items-center wow fadeIn">
     <div  class="col-6 d-flex  justify-content-center align-items-center ">
       <div class="card" style="width: 25rem; padding: 15px;" class="col-md-12 shadow-lg">
-        <h1 class="text-center">{% trans "Sign In" %}</h1>
 
         {% get_providers as socialaccount_providers %} 
         {% if socialaccount_providers %}
@@ -56,16 +64,7 @@
         </div>
       </div>
     </div>
-
-    <div class="row justify-content-center align-items-center wow fadeIn">
-      <div  class="col-6 d-flex  justify-content-center align-items-center ">
-        <div class="card text-center" style="width: 25rem; padding: 15px;" class="col-md-12 shadow-lg">
-          <h1>Guest Login</h1>
-          <p><b>Username: Guest</b></p>
-          <p><b>Password: guestPassword</b></p>
-        </div>
-      </div>
-    </div>
+    <br />
   </div>
 
 

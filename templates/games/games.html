@@ -1,153 +1,61 @@
-{% extends 'base.html' %}{% block content %}
+{% extends 'base.html' %} {% load static %} {% block content %}
+<!-- ========================= SECTION PAGETOP ========================= -->
+<section class="section-pagetop bg">
+  <div class="container">
+    <h1 class="title-page text-center">{{platform}} Catalog</h1>
+  </div>
+  <!-- container //  -->
+</section>
+<!-- ========================= SECTION INTRO END// ========================= -->
 
-<div class="container">
-  <h1 class="platformTitle">{{ platform }}</h1>
-  <hr />
-</div>
+<section class="section-content padding-y">
+  <div class="container">
+    <!-- sect-heading -->
+    <!-- ============================ COMPONENT BOOTSTRAP CARD WITH  IMG ================================= -->
 
-<div class="container">
-  <div class="center">
-    <div class="row justify-content-center">
+    <br /><br />
+    <!-- sect-heading -->
+
+    <!-- ============================ COMPONENTS 1  ================================= -->
+    <div class="row">
       {% for game in games %}
-      <div class="col-12 col-md-6 col-xl-4">
-        <div class="card shadow-lg hvr-grow" style="width: 18rem;">
-          <img src="{{ game.box_art }}" class="card-img-top" alt="..." />
-
-          <h5 class="card-title mb-3">{{ game.title }}</h5>
-          <h6 class="card-title">${{ game.price_per_unit }}</h6>
-
-          <hr />
-          <div class="row justify-content-center mb-3">
-            <div class="col-auto">
-              <a
-                data-toggle="modal"
-                data-target="#modal{{ game.id }}"
-                class="btn btn-default"
-                data-placement="top"
-                title="Preview Game"
-                ><i class="far fa-eye"></i
-              ></a>
-            </div>
-            <div class="col-auto">
-              <a
-                href="{% url 'single_game' game.id %}"
-                class="btn btn-default"
-                data-placement="top"
-                title="Game Details"
-                ><i class="fas fa-info"></i
-              ></a>
-            </div>
-            <div class="col-auto">
-              <form
-                method="POST"
-                action="{{ game.get_add_remove_to_wishlist_url }}"
-                class="form border-top-0 rounded-0 form-wishlist-ajax"
-              >
-                {% csrf_token %}
-                <span class="submit-span">
-                  {% if game.title in wished_games %}
-
-                  <button
-                    type="submit"
-                    class="btn bg-transparent border-0 "
-                    id="wishButton"
-                  >
-                    <i class="fas fa-heart text-danger"></i>
-                  </button>
-
-                  {% else %}
-
-                  <button
-                    type="submit"
-                    class="btn bg-transparent border-0"
-                    id="wishButton"
-                  >
-                    <i class="far fa-heart"></i>
-                  </button>
-
-                  {% endif %}
-                </span>
-              </form>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Modal -->
-      <div
-        class="modal fade mt-5 rounded-0"
-        id="modal{{ game.id }}"
-        tabindex="-1"
-        role="dialog"
-        aria-labelledby="ModalLongTitle"
-        aria-hidden="true"
-      >
-        <div class="modal-dialog" role="document">
-          <div class="modal-content">
-            <div
-              class="modal-body text-center gamesModal border-top-0 border-bottom-0"
+      <div class="col-md-3">
+        <figure class="card card-product-grid">
+          <div class="img-wrap">
+            <img src="{{ game.box_art }}" />
+            <a class="btn-overlay" href="{% url 'single_game' game.id %}"
+              ><i class="fa fa-search-plus"></i> Game Details</a
             >
-              <div class="row text-white ">
-                <div>
-                  <div class="col">
-                    <img
-                      src="{{ game.box_art }}"
-                      class="shadow-lg "
-                      alt="..."
-                      style="height:375px; width:300px"
-                    />
-                  </div>
-                  <div class="col">
-                    <div class="toast-body">
-                      <h3 class="mt-0">{{ game.title }}</h3>
-                    </div>
-                    <div class="toast-body">
-                      {% for developer in game.developers %}
-                      <span
-                        class="mt-0 badge badge-pill badge-success rounded-0 shadow-lg"
-                        >Developer: {{ developer }}</span
-                      >
-                      {% endfor %}
-                      <span
-                        class="mt-0 badge badge-pill badge-success rounded-0 shadow-lg"
-                        >Release Date: {{ game.release_date }}</span
-                      >
-                    </div>
-                    <div class="toast-body">
-                      {{ game.description }}
-                    </div>
-                    <div class="toast-body">
-                      {% for tag in game.genre_tages %}
-                      <span
-                        class="badge badge-pill badge-primary rounded-0 shadow-lg"
-                      >
-                        {{ tag }}
-                      </span>
-                      {% endfor %}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <form
-              method="POST"
-              action="{{ game.get_add_to_cart_url }}"
-              class="form modal-footer bg-dark border-top-0 rounded-0 form-game-ajax"
-            >
-              {% csrf_token %}
-
-              <button
-                type="submit"
-                class="btn btn-primary btn-lg btn-block shadow-lg"
-              >
-                $60 - Add to Cart
-              </button>
-            </form>
           </div>
-        </div>
+          <figcaption class="info-wrap border-top">
+            <div class="text-center">
+              <b class="title">{{ game.title }}</b>
+              <br />
+              <var class="price">Price: {{ game.price_per_unit }}</var>
+            </div>
+
+            <div class="price mt-2">
+              <!-- price-wrap.// -->
+              <a
+                href="#"
+                onclick="addToCart(event, '{{ game.get_add_to_cart_url }}')"
+                class="btn btn-block btn-outline-primary float-right"
+              >
+                <span class="text">Add to cart</span>
+                <i class="fas fa-shopping-cart"></i>
+              </a>
+            </div>
+            <!-- price-wrap.// -->
+          </figcaption>
+        </figure>
+        <!-- card // -->
       </div>
       {% endfor %}
+      <!-- col.// -->
     </div>
+    <!-- ============================ COMPONENTS 1  END .// ================================= -->
+    <br />
   </div>
-</div>
+  <!-- container .//  -->
+</section>
 {% endblock %}

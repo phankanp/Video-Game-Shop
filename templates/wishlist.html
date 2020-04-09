@@ -1,164 +1,60 @@
 {% extends 'base.html' %}{% block content %}
 
-<div class="container">
-  <h1 class="platformTitle">Wishlist</h1>
-  <hr />
-</div>
+<!-- ========================= SECTION PAGETOP ========================= -->
+<section class="section-pagetop bg">
+  <div class="container">
+    <h1 class="title-page text-center">Wishlist</h1>
+  </div>
+  <!-- container //  -->
+</section>
+<!-- ========================= SECTION INTRO END// ========================= -->
 
-<div class="container">
-  <div class="center">
-    <div class="row justify-content-center">
-      {% if games %} {% for game in games %}
-
-      <div class="col-12 col-md-6 col-xl-4">
-        <div class="card shadow-lg hvr-grow" style="width: 18rem;">
-          <img
-            src="{{ game.wished_game.box_art }}"
-            class="card-img-top"
-            alt="..."
-          />
-
-          <h5 class="card-title mb-3">{{ game.wished_game.title }}</h5>
-          <h5 class="card-title mt-3">
-            {{ game.wished_game.get_platform_display }}
-          </h5>
-          <h6 class="card-title">${{ game.wished_game.price_per_unit }}</h6>
-
-          <hr />
-          <div class="row justify-content-center mb-3">
-            <div class="col-auto">
-              <a
-                data-toggle="modal"
-                data-target="#modal{{ game.id }}"
-                class="btn btn-default"
-                data-placement="top"
-                title="Preview Game"
-                ><i class="far fa-eye"></i
-              ></a>
-            </div>
-            <div class="col-auto">
-              <a
-                href="{% url 'single_game' game.wished_game.id %}"
-                class="btn btn-default"
-                data-placement="top"
-                title="Game Details"
-                ><i class="fas fa-info"></i
-              ></a>
-            </div>
-            <div class="col-auto">
-              <form
-                method="POST"
-                action="{{ game.wished_game.get_add_remove_to_wishlist_url }}"
-                class="form border-top-0 rounded-0 form-wishlist-ajax"
-              >
-                {% csrf_token %}
-                <span class="submit-span">
-                  {% if game.wished_game.title in wished_games %}
-
-                  <button
-                    type="submit"
-                    class="btn bg-transparent border-0 "
-                    id="wishButton"
-                  >
-                    <i class="fas fa-heart text-danger"></i>
-                  </button>
-
-                  {% else %}
-
-                  <button
-                    type="submit"
-                    class="btn bg-transparent border-0"
-                    id="wishButton"
-                  >
-                    <i class="far fa-heart"></i>
-                  </button>
-
-                  {% endif %}
-                </span>
-              </form>
-            </div>
-          </div>
+<section class="section-content padding-y">
+  <div class="container">
+    {% if games %} {% for game in games %}
+    <div class="col-md-3">
+      <figure class="card card-product-grid">
+        <div class="img-wrap">
+          <img src="{{ game.wished_game.box_art }}" />
+          <a class="btn-overlay" href="{% url 'single_game' game.id %}"
+            ><i class="fa fa-search-plus"></i> Game Details</a
+          >
         </div>
-      </div>
-
-      <!-- Modal -->
-      <div
-        class="modal fade mt-5 rounded-0"
-        id="modal{{ game.id }}"
-        tabindex="-1"
-        role="dialog"
-        aria-labelledby="ModalLongTitle"
-        aria-hidden="true"
-      >
-        <div class="modal-dialog" role="document">
-          <div class="modal-content">
-            <div
-              class="modal-body text-center gamesModal border-top-0 border-bottom-0"
+        <figcaption class="info-wrap border-top">
+          <div class="text-center">
+            <b class="title">{{ game.wished_game.title }}</b>
+            <br />
+            <var class="price"
+              >Price: {{ game.wished_game.price_per_unit }}</var
             >
-              <div class="row text-white ">
-                <div>
-                  <div class="col">
-                    <img
-                      src="{{ game.wished_game.box_art }}"
-                      class="shadow-lg "
-                      alt="..."
-                      style="height:375px; width:300px"
-                    />
-                  </div>
-                  <div class="col">
-                    <div class="toast-body">
-                      <h3 class="mt-0">{{ game.wished_game.title }}</h3>
-                    </div>
-                    <div class="toast-body">
-                      {% for developer in game.wished_game.developer %}
-                      <span
-                        class="mt-0 badge badge-pill badge-success rounded-0 shadow-lg"
-                        >Developer: {{ developer }}</span
-                      >
-                      {% endfor %}
+          </div>
 
-                      <span
-                        class="mt-0 badge badge-pill badge-success rounded-0 shadow-lg"
-                        >Release Date: {{ game.wished_game.release_date }}</span
-                      >
-                    </div>
-                    <div class="toast-body">
-                      {{ game.wished_game.description }}
-                    </div>
-                    <div class="toast-body">
-                      {% for tag in game.wished_game.genre_tages %}
-                      <span
-                        class="badge badge-pill badge-primary rounded-0 shadow-lg"
-                      >
-                        {{ tag }}
-                      </span>
-                      {% endfor %}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+          <div class="price mt-2">
+            <!-- price-wrap.// -->
             <form
               method="POST"
               action="{{ game.get_add_to_cart_url }}"
-              class="form modal-footer bg-dark border-top-0 rounded-0 form-game-ajax"
+              class="form form-game-ajax"
             >
               {% csrf_token %}
-
               <button
                 type="submit"
-                class="btn btn-primary btn-lg btn-block shadow-lg"
+                class="btn btn-block btn-outline-primary float-right"
               >
-                $60 - Add to Cart
+                Add to cart
+                <i class="fa fa-shopping-cart"></i>
               </button>
             </form>
           </div>
-        </div>
-      </div>
-      {% endfor %} {% else %}
-      <h2 class="mt-5 text-white text-center">No Games In Wishlist!</h2>
-      {% endif %}
+          <!-- price-wrap.// -->
+        </figcaption>
+      </figure>
+      <!-- card // -->
     </div>
+
+    {% endfor %} {% else %}
+    <h2 class="mt-5 text-white text-center">No Games In Wishlist!</h2>
+    {% endif %}
   </div>
-</div>
+</section>
 {% endblock %}

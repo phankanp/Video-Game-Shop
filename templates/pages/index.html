@@ -1,267 +1,139 @@
-{% extends 'base.html' %} {% block content %}
-<div class="container">
-  <div class="jumbotron mt-4 text-center">
-    <h1 class="display-4">The Video Game Store</h1>
-    <p class="lead">
-      <b>Click on the console images below to shop the platform collections!</b>
-    </p>
-    <hr class="my-4" />
-    <p>
-      <b
-        >Tech Stack: Python | Django | JavaScript(jQuery) | Bootstrap |
-        PostgreSQL | Stripe Payments | RAWG.io Games API</b
-      >
-    </p>
-    <div class="pt-2">
-      <a
-        href="https://github.com/phankanp/Video-Game-Shop"
-        class="btn btn-outline-dark"
-        >GitHub <i class="fab fa-github"></i
-      ></a>
-    </div>
+{% extends 'base.html' %} {% load static %} {% block content %}
+<!-- ========================= SECTION PAGETOP ========================= -->
+<section class="section-pagetop bg">
+  <div class="container">
+    <h1 class="title-page text-center">Welcome to Games Realm!</h1>
   </div>
-  <div class="row row-with-wide-cards">
-    <div class="col-md-3 col-sm-12 d-flex">
-      <div class="hovereffect ">
-        <div class="card bg-dark text-white topRowImg flex-fill">
+  <!-- container //  -->
+</section>
+<!-- ========================= SECTION INTRO END// ========================= -->
+
+<section class="section-content padding-y">
+  <div class="container">
+    <header class="section-heading">
+      <h2 class="section-title">Platforms</h2>
+    </header>
+    <!-- sect-heading -->
+    <!-- ============================ COMPONENT BOOTSTRAP CARD WITH  IMG ================================= -->
+    <div class="row">
+      <div class="col-md-3 text-center">
+        <div class="card bg-dark">
           <img
-            src="https://res.cloudinary.com/djmrmontu/image/upload/v1576551307/Box%20Art/xbox-2958864_1280_bentgf.jpg"
-            class="card-img shadow-lg "
-            alt="..."
+            src="https://res.cloudinary.com/djmrmontu/image/upload/c_scale,h_853,w_1280/v1586225296/xbox_trpayd.jpg"
+            class="card-img opacity"
           />
-          <div class="card-img-overlay">
-            <h2 class="card-title">Xbox</h2>
-            <a href="{% url 'games_list' 'X' %}" class="btn btn-primary info"
+          <div class="card-img-overlay text-white">
+            <h3 class="card-title">Xbox</h3>
+            <br /><br />
+            <a href="{% url 'games_list' 'X' %}" class="btn btn-light"
               >Shop Now!</a
             >
           </div>
         </div>
       </div>
-    </div>
-    <div class="col-md-3 col-sm-12 d-flex">
-      <div class="hovereffect">
-        <div class="card bg-dark text-white topRowImg">
+      <!-- col.// -->
+      <div class="col-md-3 text-center">
+        <div class="card bg-dark">
           <img
             src="https://res.cloudinary.com/djmrmontu/image/upload/v1576551297/Box%20Art/ps4-2326600_1280_t5thir.jpg"
-            class="card-img shadow-lg"
-            alt="..."
+            class="card-img opacity"
           />
-          <div class="card-img-overlay">
-            <h2 class="card-title">PS4</h2>
-            <a href="{% url 'games_list' 'PS' %}" class="btn btn-primary info"
+          <div class="card-img-overlay text-white">
+            <h3 class="card-title">PS4</h3>
+            <br /><br />
+            <a href="{% url 'games_list' 'PS' %}" class="btn btn-light"
               >Shop Now!</a
             >
           </div>
         </div>
       </div>
-    </div>
-    <div class="col-md-3 col-sm-12 d-flex">
-      <div class="hovereffect">
-        <div class="card bg-dark text-white topRowImg">
+      <!-- col.// -->
+      <div class="col-md-3 text-center">
+        <div class="card bg-dark">
           <img
             src="https://res.cloudinary.com/djmrmontu/image/upload/v1576551264/Box%20Art/nintendo-switch-3953601_1280_girqyd.jpg"
-            class="card-img shadow-lg"
-            alt="..."
+            class="card-img opacity"
           />
-          <div class="card-img-overlay">
-            <h2 class="card-title">Switch</h2>
-            <a href="{% url 'games_list' 'S' %}" class="btn btn-primary info"
+          <div class="card-img-overlay text-white">
+            <h3 class="card-title">Switch</h3>
+            <br /><br />
+            <a href="{% url 'games_list' 'S' %}" class="btn btn-light"
               >Shop Now!</a
             >
           </div>
         </div>
       </div>
-    </div>
-    <div class="col-md-3 col-sm-12 d-flex">
-      <div class="hovereffect">
-        <div class="card bg-dark text-white topRowImg">
+      <!-- col.// -->
+      <div class="col-md-3 text-center">
+        <div class="card bg-dark">
           <img
             src="https://res.cloudinary.com/djmrmontu/image/upload/v1576551289/Box%20Art/keyboard-70506_1280_uachf7.jpg"
-            class="card-img shadow-lg"
-            alt="..."
+            class="card-img opacity"
           />
-          <div class="card-img-overlay">
-            <h2 class="card-title">PC</h2>
-            <a href="{% url 'games_list' 'PC' %}" class="btn btn-primary info"
+          <div class="card-img-overlay text-white">
+            <h3 class="card-title">PC</h3>
+            <br /><br />
+            <a href="{% url 'games_list' 'PC' %}" class="btn btn-light"
               >Shop Now!</a
             >
           </div>
         </div>
       </div>
+      <!-- col.// -->
     </div>
-  </div>
+    <!-- row.// -->
+    <!-- ============================ COMPONENTBOOTSTRAP CARD IMG  END .// ================================= -->
 
-  <div class="d-flex justify-content-center">
-    <div
-      class="card text-white bg-primary mb-3 text-center"
-      style="max-width: 30rem;"
-    >
-      <div class="card-header display-4">From Our Catalog</div>
-    </div>
-  </div>
+    <br /><br />
 
-  <div class="row" style="text-align: center;">
-    <div style="width: 90%; margin: auto;">
-      <div class="container-fluid">
-        <div class="row">
-          {% for game in games %}
+    <header class="section-heading">
+      <h2 class="section-title">From Our Catalog</h2>
+    </header>
+    <!-- sect-heading -->
 
-          <div class="col-12 col-md-6 col-xl-4">
-            <div
-              class="card shadow-lg hvr-grow mx-auto"
-              style="width: 18rem; cursor: default"
+    <!-- ============================ COMPONENTS 1  ================================= -->
+    <div class="row">
+      {% for game in games %}
+      <div class="col-md-3">
+        <figure class="card card-product-grid">
+          <div class="img-wrap">
+            <img src="{{ game.box_art }}" />
+            <a class="btn-overlay" href="{% url 'single_game' game.id %}"
+              ><i class="fa fa-search-plus"></i> Game Details</a
             >
-              <img src="{{ game.box_art }}" class="card-img-top" alt="..." />
-
-              <h5 class="card-title mt-3">{{ game.title }}</h5>
-              <h5 class="card-title mt-3">{{ game.get_platform_display }}</h5>
-
-              <hr />
-              <div class="row justify-content-center mb-3">
-                <div class="col-auto">
-                  <a
-                    data-toggle="modal"
-                    data-target="#modal{{ game.id }}"
-                    class="btn btn-default"
-                    data-placement="top"
-                    title="Preview Game"
-                    style="cursor: pointer"
-                    ><i class="far fa-eye"></i
-                  ></a>
-                </div>
-                <div class="col-auto">
-                  <a
-                    href="{% url 'single_game' game.id %}"
-                    class="btn btn-default"
-                    role="button"
-                    data-placement="top"
-                    title="Game Details"
-                    ><i class="fas fa-info"></i
-                  ></a>
-                </div>
-                <div class="col-auto wishlist-toggle">
-                  {% if AnonymousUser.is_authenticated %}
-                  <button
-                    type="submit"
-                    class="btn bg-transparent border-0"
-                    id="wishButton"
-                    disabled
-                  >
-                    <i class="far fa-heart"></i>
-                  </button>
-                  {% else %}
-                  <form
-                    method="POST"
-                    action="{{ game.get_add_remove_to_wishlist_url }}"
-                    class="form border-top-0 rounded-0 form-wishlist-ajax"
-                  >
-                    {% csrf_token %}
-                    <span class="submit-span">
-                      {% if game.title in wished_games %}
-
-                      <button
-                        type="submit"
-                        class="btn bg-transparent border-0 "
-                        id="wishButton"
-                      >
-                        <i class="fas fa-heart text-danger"></i>
-                      </button>
-
-                      {% else %}
-
-                      <button
-                        type="submit"
-                        class="btn bg-transparent border-0"
-                        id="wishButton"
-                      >
-                        <i class="far fa-heart"></i>
-                      </button>
-
-                      {% endif %}
-                    </span>
-                  </form>
-                  {% endif %}
-                </div>
-              </div>
-            </div>
           </div>
-          <!-- Modal -->
-          <div
-            class="modal fade mt-5 rounded-0"
-            id="modal{{ game.id }}"
-            tabindex="-1"
-            role="dialog"
-            aria-labelledby="ModalLongTitle"
-            aria-hidden="true"
-          >
-            <div class="modal-dialog" role="document">
-              <div class="modal-content">
-                <div
-                  class="modal-body text-center gamesModal border-top-0 border-bottom-0"
-                >
-                  <div class="row text-white ">
-                    <div>
-                      <div class="col">
-                        <img
-                          src="{{ game.box_art }}"
-                          class="shadow-lg "
-                          alt="..."
-                          style="height:375px; width:300px"
-                        />
-                      </div>
-                      <div class="col">
-                        <div class="toast-body">
-                          <h3 class="mt-0">{{ game.title }}</h3>
-                        </div>
-                        <div class="toast-body">
-                          {% for developer in game.developers %}
-                          <span
-                            class="mt-0 badge badge-pill badge-success rounded-0 shadow-lg"
-                            >Developer: {{ developer }}</span
-                          >
-                          {% endfor %}
-                          <span
-                            class="mt-0 badge badge-pill badge-success rounded-0 shadow-lg"
-                            >Release Date: {{ game.release_date }}</span
-                          >
-                        </div>
-                        <div class="toast-body">
-                          {{ game.description }}
-                        </div>
-                        <div class="toast-body">
-                          {% for tag in game.genre_tages %}
-                          <span
-                            class="badge badge-pill badge-primary rounded-0 shadow-lg"
-                          >
-                            {{ tag }}
-                          </span>
-                          {% endfor %}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <form
-                  method="POST"
-                  action="{{ game.get_add_to_cart_url }}"
-                  class="form modal-footer bg-dark border-top-0 rounded-0 form-game-ajax"
-                >
-                  {% csrf_token %}
-
-                  <button
-                    type="submit"
-                    class="btn btn-primary btn-lg btn-block shadow-lg"
-                  >
-                    $60 - Add to Cart
-                  </button>
-                </form>
-              </div>
+          <figcaption class="info-wrap border-top">
+            <div class="text-center">
+              <b class="title">{{ game.title }}</b>
+              <br />
+              <var class="price">{{ game.get_platform_display }}</var>
+              <br />
+              <var class="price">Price: {{ game.price_per_unit }}</var>
             </div>
-          </div>
-          {% endfor %}
-        </div>
+
+            <div class="price mt-2">
+              <!-- price-wrap.// -->
+              <a
+                href="#"
+                onclick="addToCart(event, '{{ game.get_add_to_cart_url }}')"
+                class="btn btn-block btn-outline-primary float-right"
+              >
+                <span class="text">Add to cart</span>
+                <i class="fas fa-shopping-cart"></i>
+              </a>
+            </div>
+            <!-- price-wrap.// -->
+          </figcaption>
+        </figure>
+        <!-- card // -->
       </div>
+      {% endfor %}
+      <!-- col.// -->
     </div>
+    <!-- ============================ COMPONENTS 1  END .// ================================= -->
+    <br />
   </div>
-</div>
+  <!-- container .//  -->
+</section>
+<!-- ========================= SECTION CONTENT END// ========================= -->
 {% endblock %}

@@ -5,10 +5,20 @@
 {% block head_title %}{% trans "Sign Out" %}{% endblock %}
 
 {% block content %}
+
+<!-- ========================= SECTION PAGETOP ========================= -->
+<section class="section-pagetop bg">
+  <div class="container text-center">
+    <h1 class="title-page">Sign In</h1>
+  </div>
+  <!-- container //  -->
+</section>
+<!-- ========================= SECTION INTRO END// ========================= -->
+
+
 <div class="row justify-content-center align-items-center mt-5">
   <div  class="col-6 d-flex  justify-content-center align-items-center ">
     <div class="card" style="width: 25rem; padding: 15px;" class="col-md-12 shadow-lg">
-      <h1 class="text-center">{% trans "Sign Out" %}</h1>
 
       <p class="text-center">{% trans 'Are you sure you want to sign out?' %}</p>
 
@@ -22,5 +32,5 @@
     </div>
   </div>
 </div>
-
+<br />
 {% endblock %}

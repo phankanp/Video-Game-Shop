@@ -5,8 +5,6 @@ from django.shortcuts import reverse
 from django.utils import timezone
 from django_countries.fields import CountryField
 
-# Create your models here.
-
 
 PLATFORM_CHOICES = (
     ('X', 'Xbox'),

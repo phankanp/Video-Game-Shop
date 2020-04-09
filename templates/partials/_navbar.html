@@ -1,117 +1,111 @@
 {% load static %} {% load shopping_bag_tags %}
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-lg">
-  <div class="container">
-    <a class="navbar-brand" href="{% url 'home' %}">
-      <img
-        src="{% static 'img/navbar_icon.png' %}"
-        width="35"
-        height="35"
-        class="d-inline-block align-top"
-        alt=""
-      />
-      The Video Game Store
-    </a>
-    <button
-      class="navbar-toggler"
-      type="button"
-      data-toggle="collapse"
-      data-target="#navbarNav"
-      aria-controls="navbarNav"
-      aria-expanded="false"
-      aria-label="Toggle navigation"
-    >
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav ml-auto">
+
+<header class="section-header">
+  <section class="header-main">
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="col-md-3 col-lg-3 col-12">
+          <a class="navbar-brand" href="{% url 'home' %}">
+            <img class="logo" src="{% static 'images/navbar_icon.png' %}" />
+            <b>Games Realm</b>
+          </a>
+          <!-- brand-wrap.// -->
+        </div>
         {% if request.user.is_authenticated %}
-        <li class="nav-item pt-1">
-          <a class="nav-link active" href="{% url 'wish_list' %}">
-            <i class="fas fa-heart mr-1"></i>
-            My Wishlist
-          </a>
-        </li>
-        <li class="nav-item pt-1">
-          <a class="nav-link active" href="{% url 'orders' %}">
-            <i class="fas fa-grip-lines-vertical"></i>
-            My Orders
-          </a>
-        </li>
-        <li class="nav-item pt-1">
-          <a class="nav-link active" href="{% url 'account_logout' %}">
-            <i class="fas fa-sign-out-alt"></i>
-            Logout
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="{% url 'shopping-cart' %}">
-            <span class="fa-stack fa-1x">
-              <i class="fa fa-shopping-bag fa-stack-2x"></i>
-              <span class="fa-stack-1x shopping-bag-text"
+        <div class="col-md-4 col-lg-4 col-12">
+          <form action="{% url 'search_results' %}" class="search">
+            <div class="input-group">
+              <input
+                type="search"
+                class="form-control"
+                placeholder="Search"
+                name="q"
+              />
+              <div class="input-group-append">
+                <button class="btn btn-primary" type="submit">
+                  <i class="fa fa-search"></i>
+                </button>
+              </div>
+            </div>
+          </form>
+          <!-- search-wrap .end// -->
+        </div>
+        {% else %}
+        <div class="col-md-4 col-lg-5 col-12">
+          <form action="{% url 'search_results' %}" class="search">
+            <div class="input-group">
+              <input
+                type="search"
+                class="form-control"
+                placeholder="Search"
+                name="q"
+              />
+              <div class="input-group-append">
+                <button class="btn btn-primary" type="submit">
+                  <i class="fa fa-search"></i>
+                </button>
+              </div>
+            </div>
+          </form>
+          <!-- search-wrap .end// -->
+        </div>
+        {% endif %}
+        <!-- col.// -->
+        {% if request.user.is_authenticated %}
+        <div class="col-md-5 col-lg-5 col-sm-12 col-12 text-md-right">
+          {% else %}
+          <div class="col-md-5 col-lg-3 col-sm-12 col-12 text-md-right">
+            {% endif %}
+          <div class="mt-3 mt-md-0">
+            {% if request.user.is_authenticated %}
+            <a href="{% url 'shopping-cart' %}" class="btn btn-light">
+              My cart
+              <span id="shopping-bag" class="ml-2 badge badge-warning"
                 >{{request.user|cart_item_count}}</span
               >
-            </span>
-          </a>
-        </li>
-        <form
-          class="form-inline pl-2 mx-auto"
-          action="{% url 'search_results' %}"
-        >
-          <input
-            name="q"
-            class="form-control mr-sm-2 text-center"
-            type="search"
-            placeholder="Search Games Library"
-            aria-label="Search Games Library"
-          />
-        </form>
-        {% else %}
-        <li class="nav-item pt-1">
-          <a class="nav-link active" href="{% url 'wish_list' %}">
-            <i class="fas fa-heart mr-1"></i>
-            My Wishlist
-          </a>
-        </li>
-        <li class="nav-item pt-1">
-          <a class="nav-link active" href="{% url 'orders' %}">
-            <i class="fas fa-grip-lines-vertical"></i>
-            My Orders
-          </a>
-        </li>
-        <li class="nav-item pt-1">
-          <a class="nav-link active" href="{% url 'account_login' %}">
-            <i class="fas fa-sign-in-alt "></i>
-            Login
-          </a>
-        </li>
-        <li class="nav-item pt-1">
-          <a class="nav-link active" href="{% url 'account_signup' %}">
-            <i class="fas fa-user-plus"></i>
-            Signup
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="{% url 'shopping-cart' %}">
-            <span class="fa-stack fa-1x">
-              <i class="fa fa-shopping-bag fa-stack-2x"></i>
-              <span class="fa-stack-1x shopping-bag-text">0</span>
-            </span>
-          </a>
-        </li>
-        <form
-          class="form-inline pl-2 mx-auto"
-          action="{% url 'search_results' %}"
-        >
-          <input
-            name="q"
-            class="form-control mr-sm-2 text-center"
-            type="search"
-            placeholder="Search Games Library"
-            aria-label="Search Games Library"
-          />
-        </form>
-        {% endif %}
-      </ul>
+            </a>
+            <a href="{% url 'wish_list' %}" class="btn btn-light">
+              Wishlist
+              <span class="ml-2">
+                <i class="fas fa-heart" style="color: red;"></i>
+              </span>
+            </a>
+            <a href="{% url 'orders' %}" class="btn btn-light">
+              Orders
+              <span class="ml-2">
+                <i class="fas fa-grip-lines-vertical" style="color: blue;"></i>
+              </span>
+            </a>
+            <a href="{% url 'account_logout' %}" class="btn btn-danger">
+              Logout
+            </a>
+            {% else %}
+            <a href="{% url 'account_login' %}" class="btn btn-outline-primary">
+              Login
+            </a>
+            <a href="{% url 'account_signup' %}" class="btn btn-primary">
+              Sign up
+            </a>
+            {% endif %}
+            <button
+              class="btn float-right btn-light d-md-none"
+              type="button"
+              data-toggle="collapse"
+              data-target="#main_nav8"
+              aria-controls="main_nav"
+              aria-expanded="false"
+              aria-label="Toggle navigation"
+            >
+              <i class="fa fa-bars"></i>
+            </button>
+          </div>
+        </div>
+        <!-- col.// -->
+      </div>
+      <!-- row.// -->
     </div>
-  </div>
-</nav>
+    <!-- container.// -->
+  </section>
+  <!-- header-main .// -->
+</header>
+<!-- section-header.// -->

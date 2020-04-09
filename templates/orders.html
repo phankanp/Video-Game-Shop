@@ -1,60 +1,101 @@
 {% extends 'base.html' %}{% block content %}
 
-<div class="container">
-  <h1 class="platformTitle">Your Orders</h1>
-  <hr />
-</div>
+<!-- ========================= SECTION PAGETOP ========================= -->
+<section class="section-pagetop bg">
+  <div class="container">
+    <h1 class="title-page text-center">My Orders</h1>
+  </div>
+  <!-- container //  -->
+</section>
+<!-- ========================= SECTION INTRO END// ========================= -->
 
-<div class="container">
-  {% if orders %} {% for order in orders %}
-  <h4 class="text-white mt-5">
-    Order Placed: {{ order.ordered_date }} -
-    <span class="badge badge-pill badge-primary"
-      >Status: {{ order.get_order_status_display }}</span
-    >
-    -
-    <a
-      href="{{ order.get_generate_invoice_url }}"
-      class="badge badge-pill badge-success"
-      >Generate Invoice</a
-    >
-  </h4>
+<br /><br />
 
-  <table class="table table-dark shadow-lg ">
-    <thead class="thead-dark">
-      <tr>
-        <th scope="col">#</th>
-        <th scope="col">Title</th>
-        <th scope="col">Price</th>
-        <th scope="col">Quantity</th>
-        <th scope="col">Total Price</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for order_item in order.games.all %}
-      <tr>
-        <th scope="row">{{ forloop.counter }}</th>
-        <td>{{ order_item.game.title }}</td>
-        <td>{{ order_item.game.price_per_unit }}</td>
-        <td>
-          {{ order_item.quantity }}
-        </td>
-        <td>${{ order_item.get_total_cart_item_price }}</td>
-      </tr>
-      {% endfor %}
-      <tr>
-        <th scope="row"><b>Order Total</b></th>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td>
-          <b>${{ order.get_total_cart_price }}</b>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+<section class="section-content padding-y">
+  <div class="container">
+    {% if orders %} {% for order in orders %}
+    <div class="row justify-content-center">
+      <main class="col-md-9">
+        <div class="card">
+          <table id="table" class="table table-borderless table-shopping-cart">
+            <thead class="text-muted">
+              <tr class="small text-uppercase">
+                <th scope="col">Product</th>
+                <th scope="col" width="120">Quantity</th>
+                <th scope="col" width="120">Price</th>
+                <th scope="col" width="220">Order Placed</th>
+                <th scope="col" class="text-right" width="200">Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for order_item in order.games.all %}
+              <tr id="cartItemRow{{order_item.id}}">
+                <td>
+                  <figure class="itemside">
+                    <div class="aside">
+                      <img src="{{ order_item.game.box_art }}" class="img-sm" />
+                    </div>
+                    <figcaption class="info">
+                      <a href="#" class="title text-dark"
+                        >{{order_item.game.title}}</a
+                      >
+                      <p class="text-muted small">
+                        Platform: {{order_item.game.get_platform_display}}<br />
+                      </p>
+                    </figcaption>
+                  </figure>
+                </td>
+                <td class="text-center">
+                  <span id="cart-count{{order_item.game.id}}" class="">
+                    {{order_item.quantity}}
+                  </span>
+                </td>
+                <td>
+                  <div class="price-wrap">
+                    <var id="cartItemTotal{{order_item.game.id}}" class="price"
+                      >${{order_item.get_total_cart_item_price}}</var
+                    >
+                    <small class="text-muted">
+                      ${{order_item.game.price_per_unit}} each
+                    </small>
+                  </div>
+                  <!-- price-wrap .// -->
+                </td>
+                <td>
+                  <h6 class="">
+                    {{ order.ordered_date }}
+                  </h6>
+                </td>
+                <td class="text-right">
+                  <h6 class="">
+                    <span class="badge badge-pill badge-primary"
+                      >Status: {{ order.get_order_status_display }}</span
+                    >
+                  </h6>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+
+          <div class="card-body border-top">
+            <a
+              href="{{ order.get_generate_invoice_url }}"
+              class="btn btn-primary float-md-right"
+            >
+              Generate Invoice
+              <span class="ml-2">
+                <i class="fas fa-receipt"></i>
+              </span>
+            </a>
+          </div>
+        </div>
+        <!-- card.// -->
+      </main>
+    </div>
+  </div>
   {% endfor %} {% else %}
   <h2 class="mt-5 text-white text-center">You have no recent orders</h2>
   {% endif %}
-</div>
+</section>
 {% endblock %}

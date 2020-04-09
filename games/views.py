@@ -206,11 +206,9 @@ def add_remove_to_wishlist(request, pk):
         msg = f'{game.title} was removed from your wish list'
         added = False
 
-    if request.is_ajax():
+    json_data = {
+        'msg': msg,
+        'added': added
+    }
 
-        json_data = {
-            'msg': msg,
-            'added': added
-        }
-
-        return JsonResponse(json_data)
+    return JsonResponse(json_data)
