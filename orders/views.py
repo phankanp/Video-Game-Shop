@@ -364,7 +364,7 @@ def remove_from_cart(request, pk):
 
     order = None
 
-    order_qty, orderItemId, cartItemCount, totalGamePrice = 0
+    orderItemId = cartItemCount = totalGamePrice = 0
 
     quantZero = False
 

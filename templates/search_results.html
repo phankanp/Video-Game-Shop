@@ -1,48 +1,51 @@
-{% extends 'base.html' %}{% block content %}
+{% extends 'base.html' %} {% load static %} {% block content %}
 
-<div class="container">
-  <h1 class="platformTitle">Search Results</h1>
-  <hr />
-</div>
+<!-- ========================= SECTION PAGETOP ========================= -->
+<section class="section-pagetop bg">
+  <div class="container">
+    <h1 class="title-page text-center">Search Results</h1>
+  </div>
+  <!-- container //  -->
+</section>
+<!-- ========================= SECTION INTRO END// ========================= -->
 
 <div class="container">
   {% if game_list %}
   <div class="center">
     <div class="row justify-content-center">
       {% for game in game_list %}
-      <div class="col-12 col-md-6 col-xl-3">
-        <div class="card shadow-lg hvr-grow" style="width: 18rem;">
-          <img src="{{ game.box_art }}" class="card-img-top" alt="..." />
-
-          <h5 class="card-title mb-3">{{ game.title }}</h5>
-          <h6 class="card-title">${{ game.price_per_unit }}</h6>
-
-          <hr />
-          <div class="row justify-content-center mb-3">
-            <div class="col-auto">
-              <a
-                data-toggle="modal"
-                data-target="#modal{{ game.id }}"
-                class="card-link"
-                data-placement="top"
-                title="Preview Game"
-                ><i class="far fa-eye"></i
-              ></a>
-            </div>
-            <div class="col-auto">
-              <a
-                href="{% url 'single_game' game.id %}"
-                class="text-dark"
-                data-placement="top"
-                title="Game Details"
-                ><i class="fas fa-info"></i
-              ></a>
-            </div>
-            <div class="col-auto">
-              <a href="#!"><i class="far fa-heart"></i></a>
-            </div>
+      <div class="col-md-3">
+        <figure class="card card-product-grid">
+          <div class="img-wrap">
+            <img src="{{ game.box_art }}" />
+            <a class="btn-overlay" href="{% url 'single_game' game.id %}"
+              ><i class="fa fa-search-plus"></i> Game Details</a
+            >
           </div>
-        </div>
+          <figcaption class="info-wrap border-top">
+            <div class="text-center">
+              <b class="title">{{ game.title }}</b>
+              <br />
+              <var class="price">{{ game.get_platform_display }}</var>
+              <br />
+              <var class="price">Price: {{ game.price_per_unit }}</var>
+            </div>
+
+            <div class="price mt-2">
+              <!-- price-wrap.// -->
+              <a
+                href="#"
+                onclick="addToCart(event, '{{ game.get_add_to_cart_url }}')"
+                class="btn btn-block btn-outline-primary float-right"
+              >
+                <span class="text">Add to cart</span>
+                <i class="fas fa-shopping-cart"></i>
+              </a>
+            </div>
+            <!-- price-wrap.// -->
+          </figcaption>
+        </figure>
+        <!-- card // -->
       </div>
 
       <!-- Modal -->
