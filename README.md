@@ -1,4 +1,4 @@
-# Video-Game-Shop
+# Games Realm
 
 A ecommerce shop for selling and buying video games. 
 
